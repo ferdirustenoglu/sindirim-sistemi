@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Besinin Yolculuğu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: oyun gibi, sınıfta akıllı tahtada dokunarak oynanır
+   IDEA: karanlık bir laboratuvar ekranında parlayan, saydam bir vücut; kamera organdan organa yaklaşır
+   PICTURE: tam ekran SVG vücut, lokma ve enzim parçacıkları
+   COLOUR and TYPE: koyu petrol yeşili zemin, turuncu = fiziksel, turkuaz = kimyasal; Baloo 2 + Nunito
+   LAYOUT: solda besin rafı, ortada sahne, sağ üstte sayaçlar, altta mesaj ve düğmeler */
+:root{color-scheme:dark;--bg:#0b1a1c;--ink:#f4efe6;--soft:#9fb7b4;--panel:rgba(20,30,32,.92);--line:rgba(255,255,255,.14);--f:#ff8a2a;--k:#2fd3c0;--n:#a9c7ff}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:600 16px/1.45 Nunito,system-ui,sans-serif;overflow:hidden}
+button{font:800 17px Nunito,sans-serif;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:16px;min-height:48px;padding:8px 18px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+button:hover{border-color:rgba(255,255,255,.35)}
+:focus-visible{outline:3px solid var(--k);outline-offset:3px}
+#stage{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%,#164a47 0%,#0e2527 45%,#081314 100%)}
+#stage svg{width:100%;height:100%;display:block}
+.hit{fill:transparent;cursor:pointer}
+.ring{fill:none;stroke:#fff;stroke-width:3;animation:pulse 1.2s ease-out infinite;pointer-events:none;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(1.5)}}
+.org{transition:opacity .5s}
+.dot{pointer-events:none}
+#shelf{position:fixed;left:14px;top:14px;bottom:14px;width:min(320px,46vw);background:rgba(40,46,52,.9);border:3px solid #f3d34a;border-radius:26px;padding:14px;overflow-y:auto;transition:transform .6s cubic-bezier(.6,0,.3,1);z-index:3}
+.run #shelf{transform:translateX(calc(-100% - 30px))}
+#shelf h2{font:800 22px "Baloo 2",sans-serif;margin:0 0 8px;text-align:center}
+.foods{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.food{flex-direction:column;gap:4px;padding:10px 6px;border-radius:18px;background:rgba(0,0,0,.25);min-height:0;width:100%}
+.food svg{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 3px #f3d34a}
+.food b{font-size:18px}
+.tag{font-size:13px;font-weight:900;padding:2px 10px;border-radius:99px;color:#1a1a1a;white-space:nowrap}
+.food small{font-size:13px;color:var(--soft);font-weight:700}
+#hud{position:fixed;right:14px;top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;z-index:2;width:min(440px,52vw)}
+.cnt{background:var(--panel);border:3px solid var(--line);border-radius:18px;padding:8px 14px;transition:border-color .3s,box-shadow .3s}
+.cnt .h{font:800 clamp(16px,2.2vw,26px) "Baloo 2",sans-serif;display:flex;align-items:center;gap:8px;line-height:1.1}
+.cnt .h i{width:20px;height:20px;border-radius:50%;border:3px solid #555;flex:none;transition:background .3s}
+.cnt .v{font:800 clamp(30px,4vw,48px) "Baloo 2",sans-serif;text-align:center;line-height:1.1}
+.cnt .v span{color:#bbb}
+#cf .h{color:var(--f)}#ck .h{color:var(--k)}#cf .v em{color:var(--f);font-style:normal}#ck .v em{color:var(--k);font-style:normal}
+#cf.lit{border-color:var(--f);box-shadow:0 0 18px var(--f)}#cf.lit .h i{background:var(--f)}
+#ck.lit{border-color:var(--k);box-shadow:0 0 18px var(--k)}#ck.lit .h i{background:var(--k)}
+#card{grid-column:1/-1;justify-self:end;background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:12px 16px;min-width:220px}
+#card[hidden]{display:none}
+#card h3{margin:0;font:800 26px "Baloo 2",sans-serif;line-height:1.1}
+#card .kc{font:800 40px "Baloo 2",sans-serif;color:var(--f);line-height:1.1}#card .kc small{font-size:18px;color:var(--ink)}
+#card .mac{display:grid;gap:2px;margin-top:4px}#card .mac div{display:flex;justify-content:space-between;gap:16px;font-weight:800}
+#card .mac i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+#card p{margin:6px 0 0;font-size:13px;color:var(--soft)}
+.run #card .mac,.run #card p{display:none}.run #card .kc{font-size:30px}
+#title{position:fixed;left:24px;top:14px;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s}
+.run #title{opacity:1}
+#title h1{margin:0;font:800 clamp(34px,6vw,72px)/1 "Baloo 2",sans-serif;letter-spacing:.01em;padding-bottom:6px;border-bottom:5px solid var(--f);display:inline-block}
+#title h2{margin:6px 0 0;font:800 clamp(20px,3vw,34px) "Baloo 2",sans-serif;color:var(--k)}
+#msg{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);width:min(680px,calc(100vw - 28px));background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:12px 16px;z-index:2;font-size:18px}
+#msg[hidden]{display:none}
+#msg .k{font-weight:900;font-size:14px;padding:2px 10px;border-radius:99px;color:#111;margin-right:8px}
+#hint{color:var(--soft);font-size:16px;margin-top:4px}
+#ctl{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:10px;z-index:2}
+#sum{position:fixed;inset:0;display:grid;place-items:center;background:rgba(5,12,13,.7);z-index:5;padding:16px}
+#sum[hidden]{display:none}
+#sum .box{background:#142527;border:3px solid var(--k);border-radius:24px;padding:22px;max-width:720px;width:100%;max-height:calc(100vh - 32px);overflow-y:auto}
+#sum h2{margin:0;font:800 34px "Baloo 2",sans-serif}
+#sum ol{padding-left:1.3em;margin:10px 0}#sum li{margin:6px 0}
+#sum .k{font-weight:900;font-size:13px;padding:1px 8px;border-radius:99px;color:#111;margin-right:6px}
+.prod{font-size:18px;background:rgba(47,211,192,.12);border-radius:14px;padding:10px 14px}
+@media(max-width:700px){#hud{width:calc(100vw - 28px);top:auto;bottom:146px;right:14px}.run #hud{top:auto}#card{display:none}#title{top:10px;left:14px}#msg{bottom:76px;font-size:16px}
+ #shelf{width:calc(100vw - 28px);bottom:300px}.foods{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.food svg{width:50px;height:50px}}
+@media(prefers-reduced-motion:reduce){.ring{animation:none;opacity:.8}#shelf{transition:none}}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg id="sv" viewBox="60 0 480 740" preserveAspectRatio="xMidYMid meet" aria-label="Saydam vücut ve sindirim organları">
+ <defs>
+  <filter id="gl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="tube" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".5" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+ </defs>
+ <g fill="rgba(120,220,210,.07)" stroke="rgba(160,240,230,.45)" stroke-width="2">
+  <ellipse cx="300" cy="110" rx="76" ry="88"/>
+  <path d="M270,192 L270,232 M330,192 L330,232" fill="none"/>
+  <path d="M270,232 Q180,236 172,300 L172,660 Q172,712 230,716 L370,716 Q428,712 428,660 L428,300 Q420,236 330,232"/>
+ </g>
+ <g id="mouth">
+  <ellipse class="org" cx="238" cy="138" rx="9" ry="14" fill="rgba(255,255,255,.55)"/>
+  <ellipse class="org" cx="362" cy="138" rx="9" ry="14" fill="rgba(255,255,255,.55)"/>
+  <ellipse cx="300" cy="126" rx="46" ry="26" fill="#d98a9a" fill-opacity=".55"/>
+  <rect x="252" y="93" width="96" height="7" rx="3.5" fill="#f2a6b8"/>
+  <g id="teethU"></g><g id="teethL"></g>
+  <ellipse cx="300" cy="140" rx="30" ry="8" fill="#f2a6b8"/><ellipse cx="300" cy="139" rx="22" ry="4" fill="#fff" fill-opacity=".5"/>
+  <rect x="252" y="152" width="96" height="7" rx="3.5" fill="#f2a6b8"/>
+ </g>
+ <path d="M300,160 L300,196" stroke="#c9b8a0" stroke-opacity=".5" stroke-width="20" stroke-linecap="round"/>
+ <path id="eso" d="M300,165 C300,230 306,280 330,330" fill="none" stroke="#e4d8b8" stroke-opacity=".45" stroke-width="16" stroke-linecap="round"/>
+ <g filter="url(#gl)">
+  <path id="kal" d="M232,642 L222,642 Q212,642 212,630 L212,486 Q212,472 226,472 L398,472 Q412,472 412,486 L412,640 Q412,664 390,668 L336,676 Q316,679 314,694 L312,704" fill="none" stroke="url(#tube)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path id="inc" d="M332,428 C312,440 300,450 300,470 C300,492 372,482 372,500 C372,518 248,510 248,528 C248,546 372,538 372,556 C372,574 248,566 248,584 C248,602 372,594 372,612 C372,632 300,626 264,632 C246,636 240,640 232,642" fill="none" stroke="#f1e6e6" stroke-opacity=".55" stroke-width="13" stroke-linecap="round"/>
+  <ellipse cx="252" cy="344" rx="74" ry="36" fill="#c0503a" fill-opacity=".35" stroke="#e08a70" stroke-opacity=".5"/>
+  <ellipse cx="300" cy="360" rx="34" ry="22" fill="#c0503a" fill-opacity=".3" stroke="#e08a70" stroke-opacity=".4"/>
+  <ellipse id="gb" cx="268" cy="388" rx="12" ry="22" fill="#62c25a" fill-opacity=".35" stroke="#8be27f" stroke-opacity=".6"/>
+  <path id="duct" d="M272,400 L300,448" stroke="#6cf08a" stroke-width="4" stroke-linecap="round"/>
+  <path id="sto" d="M326,326 C350,300 404,318 404,362 C404,410 368,438 330,434 C306,432 300,420 312,412 C338,404 352,392 344,364 Z" fill="#e8b8a8" fill-opacity=".42" stroke="#f3cfc2" stroke-opacity=".6" stroke-width="2"/>
+  <g id="pan" fill="#e9c04c" fill-opacity=".4" stroke="#f6d977" stroke-opacity=".6"><ellipse cx="306" cy="448" rx="20" ry="9"/><ellipse cx="342" cy="446" rx="22" ry="10"/><ellipse cx="380" cy="442" rx="22" ry="10"/></g>
+  <circle cx="312" cy="708" r="6" fill="#c98a74" fill-opacity=".7"/>
+ </g>
+ <g id="fx"></g>
+ <g id="bol" style="opacity:0"></g>
+ <circle id="ring" class="ring" r="20" cx="0" cy="0" style="display:none"/>
+ <circle id="hit" class="hit" r="30" cx="-100" cy="-100"/>
+</svg>
+</div>
+
+<div id="title"><h1 id="tt">AĞIZ</h1><h2 id="ts"></h2></div>
+
+<aside id="shelf" aria-label="Besinler"><h2>Bir besin seç</h2><div class="foods" id="foods"></div></aside>
+
+<div id="hud">
+ <div class="cnt" id="cf"><div class="h"><i></i>FİZİKSEL</div><div class="v"><em id="fv">0</em><span>/<b id="ft">0</b></span></div></div>
+ <div class="cnt" id="ck"><div class="h"><i></i>KİMYASAL</div><div class="v"><em id="kv">0</em><span>/<b id="kt">0</b></span></div></div>
+ <div id="card" hidden></div>
+</div>
+
+<div id="msg" hidden><div id="mt"></div><div id="hint"></div></div>
+<div id="ctl"><a href="ders.html" style="font:800 17px Nunito,sans-serif;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:16px;min-height:48px;padding:8px 18px;display:inline-flex;align-items:center;text-decoration:none">Ders anlatımı</a><button id="rs">↺ Sıfırla</button><button id="fs">⛶ Tam ekran</button></div>
+
+<div id="sum" hidden><div class="box" id="sb"></div></div>
+
+<script>
+{
+const $=s=>document.querySelector(s),sv=$('#sv'),NS='http://www.w3.org/2000/svg',RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// dişler
+$('#teethU').innerHTML=[0,1,2,3,4,5].map(i=>`<rect x="${258+i*14.4}" y="99" width="10" height="13" rx="3" fill="#fff"/>`).join('');
+$('#teethL').innerHTML=[0,1,2,3,4,5].map(i=>`<rect x="${258+i*14.4}" y="140" width="10" height="12" rx="3" fill="#fff"/>`).join('');
+
+const C={karb:['Karbonhidrat','#f0a43a'],prot:['Protein','#ef5b5b'],yag:['Yağ','#f3d34a'],vit:['Vitamin, mineral','#58c26b'],su:['Su','#5aa9f0']};
+const F=[
+ {id:'ekmek',n:'Ekmek',m:'karb',kcal:265,mac:[49,9,3],col:'#e3a65a',ic:'<rect x="12" y="16" width="40" height="34" rx="12" fill="#c77a2e"/><rect x="17" y="21" width="30" height="25" rx="8" fill="#f6dca6"/>'},
+ {id:'et',n:'Et (biftek)',m:'prot',kcal:250,mac:[0,26,15],col:'#b8423b',ic:'<ellipse cx="32" cy="33" rx="22" ry="16" fill="#a8322c"/><path d="M18,30 Q32,24 46,32 M20,38 Q32,33 44,40" stroke="#f3c7c0" stroke-width="2.5" fill="none"/>'},
+ {id:'yumurta',n:'Yumurta',m:'prot',kcal:155,mac:[1,13,11],col:'#f4e6b0',ic:'<path d="M10,34 Q12,14 32,16 Q54,14 54,34 Q52,52 32,50 Q12,52 10,34Z" fill="#fff"/><circle cx="32" cy="33" r="10" fill="#f6b51e"/>'},
+ {id:'tereyagi',n:'Tereyağı',m:'yag',kcal:717,mac:[0.1,0.9,81],col:'#f6e08a',ic:'<path d="M12,30 L40,22 L54,30 L26,38Z" fill="#fff4b8"/><path d="M12,30 L26,38 L26,50 L12,42Z" fill="#f1d76a"/><path d="M26,38 L54,30 L54,42 L26,50Z" fill="#f6e58c"/>'},
+ {id:'elma',n:'Elma',m:'vit',kcal:52,mac:[14,0.3,0.2],col:'#d9433c',ic:'<circle cx="32" cy="36" r="17" fill="#d8342c"/><path d="M32,20 L33,12" stroke="#6b3d1f" stroke-width="3"/><path d="M34,15 Q44,8 46,16 Q40,20 34,15Z" fill="#4caf50"/>'},
+ {id:'havuc',n:'Havuç',m:'vit',kcal:41,mac:[10,0.9,0.2],col:'#f08a24',ic:'<path d="M14,48 L44,20 L50,28Z" fill="#f08a24"/><path d="M46,22 Q50,10 56,12 M48,24 Q60,20 58,26" stroke="#4caf50" stroke-width="3" fill="none"/>'},
+ {id:'su',n:'Su',m:'su',kcal:0,mac:[0,0,0],col:'#7cc4ff',ic:'<path d="M20,14 L44,14 L41,52 L23,52Z" fill="#dff1ff" fill-opacity=".7" stroke="#bfe2ff"/><path d="M22,28 L42,28 L41,52 L23,52Z" fill="#7cc4ff"/>'}];
+const P={karb:['glikoz','Karbonhidratlar'],prot:['amino asit','Proteinler'],yag:['yağ asidi ve gliserol','Yağlar']};
+
+$('#foods').innerHTML=F.map(f=>`<button class="food" data-f="${f.id}"><svg viewBox="0 0 64 64">${f.ic}</svg><b>${f.n}</b><span class="tag" style="background:${C[f.m][1]}">${C[f.m][0]}</span><small>${f.kcal} kcal · 100 g</small></button>`).join('');
+
+// hedefler (dünya koordinatı)
+const T={disler:[300,106,24],tukuruk:[300,139,18],yutak:[300,170,14],yemek:[312,262,20],mide:[368,380,30],midesuyu:[350,340,18],safra:[268,388,16],pankreas:[360,444,20],ince:[310,548,44],kalin:[212,560,24],anus:[312,706,16]};
+const CAM={genel:[60,0,480,740],agiz:[196,28,208,180],yemek:[214,120,230,260],mide:[196,280,250,190],ince:[180,390,260,280],kalin:[160,420,300,310],anus:[214,610,200,130]};
+const POS={agiz:[300,124],yemek:[318,290],mide:[364,386],ince:[310,520],kalin:[300,472],anus:[312,706]};
+
+function plan(f){const m=f.m,su=m==='su',fn=f.n.toLowerCase(),S=[];
+ const a=[];
+ if(!su)a.push({t:'disler',s:'DİŞLER',h:'Dişlere dokun, besini çiğne.',k:'f',fx:'chew',x:'Dişler besini küçük parçalara ayırdı, dil karıştırdı. Bu mekanik (fiziksel) sindirimdir.'});
+ if(m==='karb')a.push({t:'tukuruk',s:'TÜKÜRÜK',h:'Dile dokun, tükürüğü karıştır.',k:'k',fx:'saliva',x:'Tükürükteki enzim nişastayı parçalamaya başladı. Karbonhidratların kimyasal sindirimi ağızda başlar.'});
+ else if(!su)a.push({t:'tukuruk',s:'TÜKÜRÜK',h:'Dile dokun, tükürüğü karıştır.',k:'n',fx:'wet',x:m==='prot'?'Tükürük lokmayı ıslatıp kayganlaştırdı. Proteinlerin kimyasal sindirimi ağızda başlamaz.':m==='yag'?'Tükürük lokmayı ıslattı. Yağların kimyasal sindirimi ağızda başlamaz.':'Tükürük lokmayı ıslattı. Vitamin ve mineraller sindirilmez; '+fn+'daki az miktardaki nişasta için de tükürük işe başlar.'});
+ a.push({t:'yutak',s:'YUTMA',h:'Dilin arkasına dokun, yut.',k:'n',fx:'',x:su?'Su yutuldu. Gırtlak kapağı soluk borusunu kapattı.':'Lokma yutağa itildi. Gırtlak kapağı soluk borusunu kapattı.'});
+ S.push({id:'agiz',n:'AĞIZ',a});
+ S.push({id:'yemek',n:'YEMEK BORUSU',a:[{t:'yemek',s:'KAS KASILMASI',h:'Yemek borusuna dokun, lokmayı aşağı it.',k:'n',fx:'',x:'Yemek borusunun kasları dalga şeklinde kasılarak lokmayı mideye itti. Burada sindirim yapılmaz.'}]});
+ const b=[];
+ if(su)b.push({t:'mide',s:'GEÇİŞ',h:'Mideye dokun.',k:'n',fx:'',x:'Su midede sindirilmez; kısa sürede ince bağırsağa geçer.'});
+ else{b.push({t:'mide',s:'MİDE KASLARI',h:'Mideye dokun, besini ez ve karıştır.',k:'f',fx:'mush',x:'Mide kasları kasılarak besini ezdi ve karıştırdı (mekanik sindirim). Besin lapa hâline geldi.'});
+  if(m==='prot')b.push({t:'midesuyu',s:'MİDE ÖZ SUYU',h:'Mide duvarına dokun, mide öz suyunu salgıla.',k:'k',fx:'acid',x:'Mide öz suyu proteinlerin kimyasal sindirimini başlattı. Mide asidi mikropları da öldürür.'});}
+ S.push({id:'mide',n:'MİDE',a:b});
+ const c=[];
+ if(m==='yag')c.push({t:'safra',s:'SAFRA',h:'Safra kesesine dokun.',k:'f',fx:'bile',x:'Karaciğerde üretilip safra kesesinde depolanan safra, yağı küçük damlacıklara ayırdı. Safrada enzim yoktur; bu mekanik sindirimdir.'});
+ if(P[m])c.push({t:'pankreas',s:'PANKREAS',h:'Pankreasa dokun, pankreas öz suyunu gönder.',k:'k',fx:'enzyme',x:'Pankreas öz suyundaki enzimler sindirimi tamamladı: '+P[m][1].toLowerCase()+' → '+P[m][0]+'. Tüm besinlerin kimyasal sindirimi ince bağırsakta biter.'});
+ else if(m==='vit')c.push({t:'pankreas',s:'PANKREAS',h:'Pankreasa dokun.',k:'k',fx:'enzyme',x:'Pankreas öz suyu, '+fn+'daki karbonhidratları glikoza parçaladı (kimyasal sindirim).'});
+ c.push({t:'ince',s:'EMİLİM',h:'İnce bağırsağa dokun, besinleri kana geçir.',k:'n',fx:'absorb',x:su?'Suyun büyük kısmı ince bağırsakta kana emildi.':m==='vit'?'Vitamin ve mineraller sindirilmeden, glikoz ise sindirildikten sonra villuslardan kana geçti.':'Yapı taşları ('+P[m][0]+') ince bağırsaktaki villuslardan kana geçti.'});
+ S.push({id:'ince',n:'İNCE BAĞIRSAK',a:c});
+ S.push({id:'kalin',n:'KALIN BAĞIRSAK',a:[{t:'kalin',s:'SU EMİLİMİ',h:'Kalın bağırsağa dokun.',k:'n',fx:'water',x:su?'Kalan su kalın bağırsakta emildi. Fazla su böbreklerle idrar olarak atılır (boşaltım sistemi).':'Kalın bağırsakta su ve mineraller emildi, artıklar katılaştı. Burada sindirim yapılmaz.'+(m==='vit'?' Lifler sindirilmez ama bağırsakların çalışmasına yardım eder.':'')}]});
+ if(!su)S.push({id:'anus',n:'ANÜS',a:[{t:'anus',s:'ATILIM',h:'Anüse dokun.',k:'n',fx:'',x:'Sindirilemeyen artıklar dışkı olarak anüsten atıldı.'}]});
+ return S}
+
+let food=null,S=[],si=0,ai=0,fv=0,kv=0,log=[],busy=false,vb=CAM.genel.slice(),bp=[300,124];
+const setVB=v=>{vb=v;sv.setAttribute('viewBox',v.join(' '))};
+const ease=t=>t<.5?2*t*t:1-(-2*t+2)**2/2;
+function tween(d,fn){return new Promise(r=>{if(RM||!d){fn(1);return r()}const s=performance.now();const st=n=>{const t=Math.min(1,(n-s)/d);fn(ease(t));t<1?requestAnimationFrame(st):r()};requestAnimationFrame(st)})}
+function cam(k,d=1000){const a=vb.slice(),b=CAM[k];return tween(d,t=>setVB(a.map((v,i)=>v+(b[i]-v)*t)))}
+const bol=$('#bol');
+function placeB(p){bp=p;bol.setAttribute('transform',`translate(${p[0]},${p[1]})`)}
+function moveB(pts,d=1100){const a=bp.slice();const all=[a,...pts];return tween(d,t=>{const f=t*(all.length-1),i=Math.min(all.length-2,Math.floor(f)),u=f-i;placeB([all[i][0]+(all[i+1][0]-all[i][0])*u,all[i][1]+(all[i+1][1]-all[i][1])*u])})}
+function look(st){const c=food.col;
+ if(food.m==='su'){bol.innerHTML=`<circle r="9" fill="${c}" fill-opacity=".8"/><circle r="3" cx="-3" cy="-3" fill="#fff" fill-opacity=".6"/>`;return}
+ const pc=[[-7,-4],[6,-6],[0,5],[-8,6],[8,5],[1,-10],[-2,-1]];
+ bol.innerHTML=st==='whole'?`<rect x="-13" y="-11" width="26" height="22" rx="7" fill="${c}" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/>`:
+ st==='pieces'?pc.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4" fill="${c}"/>`).join(''):
+ st==='waste'?`<ellipse rx="11" ry="8" fill="#8a5a3c"/><ellipse rx="6" ry="3" cx="-2" cy="-2" fill="#b07a55"/>`:st==='mush'?`<ellipse rx="13" ry="10" fill="${c}" fill-opacity=".6"/><circle cx="-4" cy="-3" r="3" fill="#fff" fill-opacity=".35"/><circle cx="5" cy="3" r="2.5" fill="#fff" fill-opacity=".3"/>`:
+ pc.map(([x,y])=>`<polygon points="${[0,1,2,3,4,5].map(i=>(x+3.5*Math.cos(i*1.047)).toFixed(1)+','+(y+3.5*Math.sin(i*1.047)).toFixed(1)).join(' ')}" fill="#f6dc4a"/>`).join('')}
+let bstate='whole';
+function spray(from,to,col,n=10,d=900,r=2.6){const g=$('#fx');for(let i=0;i<n;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('r',r);c.setAttribute('fill',col);c.setAttribute('class','dot');g.appendChild(c);
+ const j=[(Math.random()-.5)*14,(Math.random()-.5)*14],dl=i*60;setTimeout(()=>tween(d,t=>{c.setAttribute('cx',from[0]+j[0]+(to[0]-from[0])*t);c.setAttribute('cy',from[1]+j[1]+(to[1]-from[1])*t);c.setAttribute('opacity',t<.85?1:(1-t)/.15)}).then(()=>c.remove()),RM?0:dl)}}
+function fx(k){const b=bp;
+ if(k==='chew'){bstate='pieces';look(bstate);tween(500,t=>bol.setAttribute('transform',`translate(${b[0]},${b[1]+Math.sin(t*Math.PI*6)*3})`))}
+ if(k==='saliva'||k==='wet'){spray([238,138],b,'#8fd8ff',8);spray([362,138],b,'#8fd8ff',8);if(k==='saliva')setTimeout(()=>{bstate='mol';look(bstate)},900)}
+ if(k==='mush'){bstate='mush';look(bstate);tween(900,t=>bol.setAttribute('transform',`translate(${b[0]+Math.sin(t*Math.PI*4)*6},${b[1]})`))}
+ if(k==='acid'){spray([340,330],b,'#9cf26a',10);spray([392,360],b,'#9cf26a',8);setTimeout(()=>{bstate='mol';look(bstate)},900)}
+ if(k==='bile'){spray([268,396],[300,448],'#6cf08a',10,700);setTimeout(()=>spray([300,448],b,'#6cf08a',8,600),700)}
+ if(k==='enzyme'){spray([380,442],[306,448],'#ffb347',10,700);setTimeout(()=>{spray([306,448],b,'#ffb347',10,600);setTimeout(()=>{bstate='mol';look(bstate)},600)},700)}
+ if(k==='absorb'){for(const s of [[200,520],[420,540],[200,590],[420,600]])spray(b,s,'#ff6b6b',6,900,2.2);tween(900,t=>bol.style.opacity=1-t*.55)}
+ if(k==='water'){spray(b,[170,520],'#5aa9f0',8,800);spray(b,[440,520],'#5aa9f0',8,800)}}
+
+function hud(){$('#fv').textContent=fv;$('#kv').textContent=kv;const pl=S.flatMap(s=>s.a);$('#ft').textContent=pl.filter(x=>x.k==='f').length;$('#kt').textContent=pl.filter(x=>x.k==='k').length}
+function lit(k){$('#cf').classList.toggle('lit',k==='f');$('#ck').classList.toggle('lit',k==='k')}
+function cardHTML(){const f=food;$('#card').hidden=false;
+ $('#card').innerHTML=`<h3>${f.n}</h3><span class="tag" style="background:${C[f.m][1]}">${C[f.m][0]}</span><div class="kc">${f.kcal} <small>kcal</small></div><div class="mac">${[['Karbonhidrat','#f0a43a'],['Protein','#ef5b5b'],['Yağ','#f3d34a']].map(([n,c],i)=>`<div><span><i style="background:${c}"></i>${n}</span><span>${f.mac[i]} g</span></div>`).join('')}</div><p>100 g'da yaklaşık değerler</p>`}
+const KL={f:['FİZİKSEL','var(--f)'],k:['KİMYASAL','var(--k)'],n:['BİLGİ','var(--n)']};
+function say(x,k,h){$('#msg').hidden=false;$('#mt').innerHTML=k?`<span class="k" style="background:${KL[k][1]}">${KL[k][0]}</span>${x}`:x;$('#hint').textContent=h||''}
+function target(){const a=S[si].a[ai],[x,y,r]=T[a.t],R=$('#ring'),H=$('#hit');
+ $('#ts').textContent=a.s;R.style.display='';R.setAttribute('cx',x);R.setAttribute('cy',y);R.setAttribute('r',r);H.setAttribute('cx',x);H.setAttribute('cy',y);H.setAttribute('r',r*1.6);
+ if(ai===0&&si===0)say('<b>'+food.n+'</b> ağızda. Yolculuğu sen yöneteceksin!',null,a.h);else $('#hint').textContent='Şimdi: '+a.h}
+async function stage(i){si=i;ai=0;const s=S[i];$('#tt').textContent=s.n;$('#ts').textContent='';$('#ring').style.display='none';
+ if(s.id==='kalin'){bstate='waste';look(bstate);bol.style.opacity=1}
+ await Promise.all([cam(s.id),i?moveB(s.id==='mide'?[[330,330],POS.mide]:s.id==='ince'?[[318,428],[300,470],POS.ince]:s.id==='kalin'?[[232,642],[212,560],[212,480],POS.kalin]:s.id==='anus'?[[412,560],[400,664],[314,690],POS.anus]:[[302,200],POS.yemek],1300):Promise.resolve()]);
+ target();busy=false}
+async function act(){if(busy||!food)return;busy=true;const a=S[si].a[ai];$('#ring').style.display='none';$('#hit').setAttribute('cx',-100);
+ if(a.k==='f')fv++;if(a.k==='k')kv++;hud();lit(a.k);fx(a.fx);log.push(a);say(a.x,a.k,'');
+ await new Promise(r=>setTimeout(r,RM?300:1500));
+ ai++;if(ai<S[si].a.length){target();busy=false;return}
+ if(si<S.length-1){$('#hint').textContent='Sonraki durağa geçiliyor…';await new Promise(r=>setTimeout(r,RM?200:900));stage(si+1)}else end()}
+$('#hit').addEventListener('click',act);
+sv.addEventListener('click',e=>{if(e.target.id!=='hit'&&food&&!busy&&$('#ring').style.display!=='none')$('#hint').textContent='Parlayan halkaya dokun: '+S[si].a[ai].h});
+
+async function start(id){food=F.find(f=>f.id===id);S=plan(food);fv=kv=0;log=[];bstate='whole';hud();lit('');cardHTML();
+ document.body.classList.add('run');placeB(POS.agiz);look(bstate);bol.style.opacity=1;busy=true;await new Promise(r=>setTimeout(r,RM?0:500));stage(0)}
+$('#foods').addEventListener('click',e=>{const b=e.target.closest('.food');if(b&&!busy)start(b.dataset.f)});
+
+function end(){lit('');const m=food.m,pl=S.flatMap(s=>s.a);
+ const prod=m==='su'?'Su sindirilmeden emildi.':m==='vit'?'Vitamin ve mineraller sindirilmeden emildi; içindeki karbonhidratlar glikoza dönüştü.':`${P[m][1]} yapı taşlarına ayrıldı: <b>${P[m][0]}</b>. Bu yapı taşları kana geçti.`;
+ $('#sb').innerHTML=`<h2>${food.n} yolculuğunu tamamladı!</h2><p>Fiziksel sindirim: <b style="color:var(--f)">${fv}/${pl.filter(x=>x.k==='f').length}</b> · Kimyasal sindirim: <b style="color:var(--k)">${kv}/${pl.filter(x=>x.k==='k').length}</b></p><div class="prod">${prod}</div><ol>${log.map(a=>`<li><span class="k" style="background:${KL[a.k][1]}">${KL[a.k][0]}</span>${a.x}</li>`).join('')}</ol>${m==='karb'||m==='vit'?'<p style="color:var(--soft);font-size:14px">Not: Besinlerin çoğunda birden fazla besin öğesi vardır (ör. ekmekte biraz protein de bulunur). Burada ana besin öğesinin yolculuğu gösterildi.</p>':''}<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button id="again">Başka bir besin seç</button></div>`;
+ $('#sum').hidden=false;$('#again').focus();busy=false}
+$('#sb').addEventListener('click',e=>{if(e.target.id==='again')reset()});
+
+async function reset(){$('#sum').hidden=true;$('#msg').hidden=true;$('#ring').style.display='none';$('#hit').setAttribute('cx',-100);$('#fx').innerHTML='';bol.style.opacity=0;
+ food=null;S=[];fv=kv=0;busy=false;$('#fv').textContent=$('#kv').textContent=$('#ft').textContent=$('#kt').textContent='0';lit('');$('#card').hidden=true;document.body.classList.remove('run');cam('genel',800)}
+$('#rs').onclick=reset;
+$('#fs').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(x){}};
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&food&&!busy&&$('#sum').hidden&&e.target===document.body){e.preventDefault();act()}});
+}
+</script>
+</body>
+</html>

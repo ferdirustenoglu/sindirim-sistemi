@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sindirim Sistemi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: sıcak, öğretici, sınıfta tahtaya yansıtılacak kadar net
+   IDEA: okul duvarındaki anatomi posteri — dokununca konuşan
+   PICTURE: gövde silüetinde renkli sindirim organları, ilerleyen lokma
+   COLOUR and TYPE: beyaz zemin, mercan + koyu erik + turkuaz vurgu; Baloo 2 + Nunito
+   LAYOUT: üstte başlık ve bölüm bağlantıları; poster + bilgi paneli; tablo, oyun, test, sağlık */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#181115);--ink:light-dark(#2a1520,#f5e9ee);--soft:light-dark(#6d5560,#c8b2bc);
+--card:light-dark(#fff4f1,#251a20);--line:light-dark(#f0d6cf,#3a2a32);--body:light-dark(#fde3d9,#3a262d);--bodyline:light-dark(#efc0b0,#5a3a45);
+--coral:#e2604a;--plum:light-dark(#5b1f3a,#f2a7c3);--teal:light-dark(#0f7f80,#5fd0cf);--ok:light-dark(#1f7a3d,#7fdc9b);--bad:light-dark(#b3261e,#ff8a80)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Baloo 2",Nunito,sans-serif;line-height:1.05;text-wrap:balance;margin:0;color:var(--plum)}
+h1{font-size:clamp(34px,5vw,52px);font-weight:800}h2{font-size:clamp(28px,3.4vw,38px);margin-bottom:8px}h3{font-size:28px}
+p{margin:.4em 0}
+.band{padding:clamp(22px,3.5vw,52px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+header.band{background:var(--coral);color:#fff;padding-bottom:18px}
+header h1{color:#fff}header p{max-width:62ch;font-size:18px}
+nav.scroll{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:4px}
+nav a,button{font:800 16px Nunito,sans-serif;min-height:44px;border-radius:999px;padding:10px 18px;border:0;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+nav a{flex:none;background:rgba(255,255,255,.18);color:#fff}nav a:hover{background:rgba(255,255,255,.32)}
+button{background:var(--teal);color:light-dark(#fff,#0c1d1d)}button.ghost{background:transparent;color:var(--teal);box-shadow:inset 0 0 0 2px var(--teal)}
+button:disabled{opacity:.4;cursor:default}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:start}
+.poster svg{width:100%;height:auto;display:block}
+.org{cursor:pointer;transition:opacity .3s}
+svg.sel .org:not(.on){opacity:.28}
+.org.on{filter:drop-shadow(0 0 6px var(--coral))}
+.lbl{font:700 14px Nunito,sans-serif;fill:var(--ink);cursor:pointer}.lbl.on{fill:var(--coral)}
+.ll{stroke:var(--soft);stroke-width:1}
+#bolus{transition:transform 1s ease-in-out}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
+.panel{background:var(--card);border-radius:22px;padding:24px;border:1px solid var(--line);position:sticky;top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font-size:14px;font-weight:800;padding:4px 12px;border-radius:999px;background:var(--line);color:var(--plum)}
+.row{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.row b{color:var(--coral)}
+.fact{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--bg);font-size:16px}
+.step{font-weight:800;color:var(--teal)}
+.alt{background:var(--card)}
+table{width:100%;border-collapse:collapse;background:var(--bg);border-radius:16px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}th{background:var(--plum);color:var(--bg);font-weight:800}
+td:first-child{font-weight:800}
+.note{font-size:16px;color:var(--soft);margin-top:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.c{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px}
+.c.ok{border-color:var(--ok)}.c.bad{border-color:var(--bad)}
+.c .b{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.c button{padding:8px 14px;font-size:15px}
+.fb{font-size:15px;font-weight:800;margin-top:6px}.ok .fb{color:var(--ok)}.bad .fb{color:var(--bad)}
+.score{font:800 22px "Baloo 2",sans-serif;color:var(--teal)}
+.quiz{max-width:760px;background:var(--bg);border-radius:22px;padding:22px;border:1px solid var(--line)}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opts button{justify-content:flex-start;text-align:left;border-radius:14px;background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+.opts button.ok{box-shadow:inset 0 0 0 3px var(--ok)}.opts button.bad{box-shadow:inset 0 0 0 3px var(--bad)}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 14px}.bar i{display:block;height:100%;background:var(--coral);transition:width .4s}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.tips ul{margin:6px 0;padding-left:1.2em}.tips li{margin:6px 0}
+footer{font-size:14px;color:var(--soft);text-align:center;padding:24px}
+@media(max-width:860px){.main{grid-template-columns:minmax(0,1fr)}.panel{position:static}}
+@media(max-width:600px){table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 10px;padding-inline-start:8.5em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--soft);font-weight:600}.stack td:empty{display:none}}
+@media(prefers-reduced-motion:reduce){#bolus,.bar i,.org{transition:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <h1>Sindirim Sistemi</h1>
+  <p>7. sınıf fen bilimleri · Bir organa dokun ya da lokmanın ağızdan anüse yolculuğunu adım adım izle.</p>
+  <nav class="scroll" aria-label="Bölümler">
+    <a href="#poster">Organlar</a><a href="#besinler">Besinlerin sindirimi</a><a href="#oyun">Mekanik mi, kimyasal mı?</a><a href="#test">Test</a><a href="#saglik">Sağlık</a>
+    <a href="index.html">Besinin Yolculuğu oyunu</a><a href="#" id="fs">Tam ekran</a>
+  </nav>
+</div></header>
+
+<section class="band" id="poster"><div class="wrap main">
+  <div class="poster">
+    <svg id="fig" viewBox="0 0 520 580" role="img" aria-label="Sindirim sistemi organları">
+      <defs><linearGradient id="sh" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs>
+      <ellipse cx="260" cy="72" rx="52" ry="60" fill="var(--body)" stroke="var(--bodyline)" stroke-width="2"/>
+      <rect x="236" y="118" width="48" height="40" fill="var(--body)"/>
+      <path d="M200,152 Q158,162 140,205 L128,515 Q260,565 392,515 L380,205 Q362,162 320,152 Z" fill="var(--body)" stroke="var(--bodyline)" stroke-width="2"/>
+      <g class="org" data-id="tukuruk"><ellipse cx="226" cy="112" rx="10" ry="7" fill="#f3c04f"/><ellipse cx="294" cy="112" rx="10" ry="7" fill="#f3c04f"/></g>
+      <g class="org" data-id="agiz"><path d="M240,100 Q260,114 280,100 Q260,106 240,100 Z" fill="#c2384a" stroke="#c2384a" stroke-width="5" stroke-linejoin="round"/></g>
+      <g class="org" data-id="yutak"><path d="M260,116 L260,146" stroke="#e87e8a" stroke-width="18" stroke-linecap="round"/></g>
+      <g class="org" data-id="yemek"><path d="M260,146 C260,190 268,220 282,246" fill="none" stroke="#ec9aa0" stroke-width="12" stroke-linecap="round"/></g>
+      <g class="org" data-id="kalin"><path d="M190,482 L178,482 Q166,482 166,470 L166,366 Q166,352 180,352 L338,352 Q352,352 352,366 L352,470 Q352,490 330,494 L286,500 Q268,503 265,516 L263,532" fill="none" stroke="#c98868" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M166,380 L166,470 M352,380 L352,470" stroke="url(#sh)" stroke-width="26"/></g>
+      <g class="org" data-id="ince"><path d="M255,320 C238,336 238,356 255,366 C330,366 330,386 255,386 C188,386 188,406 255,406 C330,406 330,426 255,426 C188,426 188,446 255,446 C324,446 320,470 255,470 C220,470 205,480 182,480" fill="none" stroke="#f2a3a3" stroke-width="13" stroke-linecap="round"/></g>
+      <g class="org" data-id="mide"><path d="M276,238 C302,222 348,232 348,270 C348,312 312,336 270,331 C244,328 240,312 256,305 C282,300 302,290 292,264 Z" fill="#e2604a"/><path d="M300,250 C318,258 322,290 300,310" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/></g>
+      <g class="org" data-id="karaciger"><path d="M146,228 C190,208 262,214 286,234 C281,260 250,276 210,291 C178,301 152,292 147,270 Z" fill="#8c2f39"/><path d="M165,236 C200,224 240,224 268,234" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="4" stroke-linecap="round"/></g>
+      <g class="org" data-id="safra"><ellipse cx="205" cy="295" rx="10" ry="14" fill="#6c9a3a"/></g>
+      <g class="org" data-id="pankreas"><path d="M234,338 C260,330 300,330 332,320 C338,330 322,346 296,346 C270,349 250,351 234,348 Z" fill="#e9b44c"/></g>
+      <g class="org" data-id="anus"><circle cx="263" cy="542" r="8" fill="#8a4b36"/></g>
+      <g id="lbls"></g>
+      <circle id="bolus" r="9" cx="0" cy="0" fill="#2f9e5b" stroke="#fff" stroke-width="3" style="transform:translate(260px,104px);opacity:0"/>
+    </svg>
+    <div class="ctl">
+      <button id="prev" class="ghost" disabled>‹ Geri</button>
+      <button id="go">Lokmanın yolculuğunu başlat</button>
+      <button id="next" class="ghost" disabled>İleri ›</button>
+    </div>
+  </div>
+  <aside class="panel" id="info" aria-live="polite"></aside>
+</div></section>
+
+<section class="band alt" id="besinler"><div class="wrap">
+  <h2>Besinler nerede sindirilir?</h2>
+  <p>Büyük moleküllü besinler kana geçebilmek için en küçük yapı taşlarına ayrılmalıdır. Tüm besinlerin kimyasal sindirimi <b>ince bağırsakta</b> tamamlanır.</p>
+  <table class="stack" style="margin-top:12px">
+    <thead><tr><th>Besin</th><th>Sindirimin başladığı yer</th><th>Sindirimin bittiği yer</th><th>Yapı taşı (son ürün)</th></tr></thead>
+    <tbody>
+      <tr><td>Karbonhidrat</td><td>Ağız</td><td>İnce bağırsak</td><td>Glikoz</td></tr>
+      <tr><td>Protein</td><td>Mide</td><td>İnce bağırsak</td><td>Amino asit</td></tr>
+      <tr><td>Yağ</td><td>İnce bağırsak</td><td>İnce bağırsak</td><td>Yağ asidi ve gliserol</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Su, vitamin ve mineraller zaten küçük yapılı olduğu için sindirime uğramaz; doğrudan emilir.</p>
+</div></section>
+
+<section class="band" id="oyun"><div class="wrap">
+  <h2>Mekanik mi, kimyasal mı?</h2>
+  <p><b>Mekanik sindirim:</b> besinin fiziksel olarak küçük parçalara ayrılması (enzim yok). <b>Kimyasal sindirim:</b> enzimlerle besinin yapı taşlarına ayrılması.</p>
+  <p class="score" id="gs"></p>
+  <div class="cards" id="cards"></div>
+  <div class="ctl" style="justify-content:flex-start"><button class="ghost" id="greset">Karıştır ve yeniden başla</button></div>
+</div></section>
+
+<section class="band alt" id="test"><div class="wrap">
+  <h2>Kendini dene</h2>
+  <div class="quiz" id="quiz"></div>
+</div></section>
+
+<section class="band" id="saglik"><div class="wrap">
+  <h2>Sindirim sistemimizin sağlığı</h2>
+  <div class="tips">
+    <div><h3>Neler yapmalıyız?</h3><ul>
+      <li>Besinleri iyice çiğneyerek yavaş yemek</li>
+      <li>Dengeli beslenmek, sebze-meyve gibi lifli besinler tüketmek</li>
+      <li>Yeterince su içmek</li>
+      <li>Yemeklerden önce ve sonra elleri yıkamak</li>
+      <li>Dişleri düzenli fırçalamak</li>
+      <li>Öğün atlamamak, düzenli hareket etmek</li>
+    </ul></div>
+    <div><h3>Sık görülen rahatsızlıklar</h3><ul>
+      <li><b>Gastrit ve ülser:</b> mide iç yüzeyinin tahriş olması veya yara oluşması</li>
+      <li><b>Reflü:</b> mide içeriğinin yemek borusuna geri kaçması</li>
+      <li><b>Kabızlık:</b> lifsiz beslenme ve az su içmeyle dışkının sertleşmesi</li>
+      <li><b>İshal:</b> genellikle mikroplu besin ve su ile oluşan sık ve sulu dışkılama</li>
+    </ul></div>
+  </div>
+</div></section>
+<footer>Sindirim Sistemi · 7. sınıf fen bilimleri ders uygulaması</footer>
+
+<script>
+{
+const O={
+agiz:{n:'Ağız',t:['Sindirim kanalı'],g:'Sindirim kanalının başladığı yerdir. Besin burada lokma hâline gelir.',m:'Dişler besini keser ve öğütür; dil karıştırır.',k:'Tükürükteki enzim karbonhidratların (nişasta) sindirimini başlatır.',f:'Ekmeği uzun süre çiğnersen tatlanmaya başlar: nişasta şekere dönüşüyor!'},
+tukuruk:{n:'Tükürük bezleri',t:['Ağıza salgı yapar'],g:'Tükürük salgılar. Tükürük lokmayı ıslatır ve kayganlaştırarak yutmayı kolaylaştırır.',m:'—',k:'Tükürükteki enzim nişastayı daha küçük parçalara ayırır.',f:'Tükürük bezleri günde yaklaşık 1–1,5 litre tükürük üretir.'},
+yutak:{n:'Yutak',t:['Sindirim kanalı'],g:'Ağız ile yemek borusu arasındaki geçittir. Yutarken gırtlak kapağı soluk borusunu kapatır, lokma yemek borusuna geçer.',m:'Yok',k:'Yok',f:'Yemek yerken konuşunca öksürmemizin nedeni, lokmanın soluk borusuna kaçma tehlikesidir.'},
+yemek:{n:'Yemek borusu',t:['Sindirim kanalı'],g:'Lokmayı kaslarının dalga şeklindeki kasılmalarıyla mideye iletir.',m:'Yok (yalnızca taşır)',k:'Yok',f:'Kas hareketleri sayesinde baş aşağı dururken bile yutabiliriz. Yaklaşık 25 cm uzunluğundadır.'},
+mide:{n:'Mide',t:['Sindirim kanalı'],g:'Kaslı, torba şeklinde bir organdır. Besinler burada bir süre bekler ve bulamaç (lapa) hâline gelir.',m:'Kaslı duvarı kasılarak besinleri ezer ve karıştırır.',k:'Mide öz suyu proteinlerin sindirimini başlatır.',f:'Mide öz suyundaki asit, besinlerle gelen mikropların çoğunu öldürür.'},
+ince:{n:'İnce bağırsak',t:['Sindirim kanalı'],g:'Kimyasal sindirimin tamamlandığı yerdir. Sindirilmiş besinler iç yüzeydeki tüylü çıkıntılarla (villus) kana emilir.',m:'Kas hareketleriyle besini karıştırır; safra yağları küçük damlacıklara ayırır.',k:'Pankreas öz suyu ve bağırsak öz suyu karbonhidrat, protein ve yağların sindirimini tamamlar. Yağların sindirimi burada başlar ve biter.',f:'Yaklaşık 6–7 metre uzunluğundadır. Villuslar emilim yüzeyini çok büyütür.'},
+kalin:{n:'Kalın bağırsak',t:['Sindirim kanalı'],g:'Sindirilmeyen artıklardan su ve minerallerin emildiği yerdir. Artıklar burada katılaşarak dışkı oluşur.',m:'Yok',k:'Sindirim yapılmaz. Buradaki yararlı bakteriler bazı vitaminleri (K ve bazı B vitaminleri) üretir.',f:'İnce bağırsaktan daha kısa (yaklaşık 1,5 m) ama daha geniştir.'},
+anus:{n:'Anüs',t:['Sindirim kanalı'],g:'Sindirim kanalının son kısmıdır. Dışkı buradan vücut dışına atılır.',m:'Yok',k:'Yok',f:'Sindirim kanalı ağızdan anüse kadar kesintisiz bir borudur.'},
+karaciger:{n:'Karaciğer',t:['Yardımcı organ'],g:'Safra üretir. Safra, safra kesesinde depolanır ve ince bağırsağa gönderilir.',m:'Safra enzim içermez; yağları küçük damlacıklara ayırarak sindirimi kolaylaştırır.',k:'Yok (safrada enzim yoktur)',f:'Vücudun en büyük iç organıdır. Zararlı maddeleri etkisiz hâle getirir ve glikojen depolar.'},
+safra:{n:'Safra kesesi',t:['Yardımcı yapı'],g:'Karaciğerin ürettiği safrayı depolar; yağlı besin geldiğinde ince bağırsağa verir.',m:'Depoladığı safra yağların mekanik sindirimine yardım eder.',k:'Yok',f:'Safra kesesi alınan kişiler de yaşar; safra doğrudan bağırsağa akar.'},
+pankreas:{n:'Pankreas',t:['Yardımcı organ'],g:'Pankreas öz suyunu ince bağırsağa salgılar.',m:'Yok',k:'Pankreas öz suyundaki enzimler karbonhidrat, protein ve yağları sindirir.',f:'Pankreas ayrıca kan şekerini düzenleyen hormonlar (ör. insülin) üretir.'}};
+const L=[['tukuruk','Tükürük bezleri',112,226,112,0],['yutak','Yutak',140,252,136,0],['karaciger','Karaciğer',246,170,250,0],['safra','Safra kesesi',300,196,298,0],['kalin','Kalın bağırsak',420,166,420,0],['anus','Anüs',546,256,542,0],
+['agiz','Ağız',98,280,102,1],['yemek','Yemek borusu',190,264,190,1],['mide','Mide',272,346,272,1],['pankreas','Pankreas',334,330,326,1],['ince','İnce bağırsak',440,318,436,1]];
+const S=[
+{id:'agiz',x:260,y:104,h:'Ağızda başlıyoruz',p:'Dişler besini parçalar, dil karıştırır (mekanik). Tükürük lokmayı ıslatır; içindeki enzim nişastayı sindirmeye başlar (kimyasal).'},
+{id:'yutak',x:260,y:134,h:'Yutma',p:'Lokma yutağa itilir. Gırtlak kapağı soluk borusunu kapatır, lokma yemek borusuna geçer.'},
+{id:'yemek',x:268,y:205,h:'Yemek borusu',p:'Kasların dalga şeklindeki kasılmaları lokmayı mideye taşır. Burada sindirim olmaz.'},
+{id:'mide',x:312,y:276,h:'Midede',p:'Mide kasları besini ezip karıştırır. Mide öz suyu proteinlerin sindirimini başlatır; besin lapa hâline gelir.'},
+{id:'ince',x:255,y:406,h:'İnce bağırsakta',p:'Karaciğerden safra, pankreastan pankreas öz suyu gelir. Tüm besinlerin sindirimi tamamlanır; yapı taşları villuslarla kana emilir.'},
+{id:'kalin',x:260,y:352,h:'Kalın bağırsakta',p:'Sindirilemeyen artıklardan su ve mineraller emilir. Artıklar katılaşır.'},
+{id:'anus',x:263,y:542,h:'Yolculuğun sonu',p:'Dışkı anüsten vücut dışına atılır. Yolculuk tamamlandı!'}];
+const $=s=>document.querySelector(s),fig=$('#fig'),info=$('#info'),bol=$('#bolus');
+$('#lbls').innerHTML=L.map(([id,t,y,tx,ty,r])=>`<line class="ll" x1="${r?404:118}" y1="${y}" x2="${tx}" y2="${ty}"/><circle cx="${tx}" cy="${ty}" r="2.5" fill="var(--soft)"/><text class="lbl" data-id="${id}" x="${r?508:12}" y="${y+5}" text-anchor="${r?'end':'start'}">${t}</text>`).join('');
+fig.querySelectorAll('.org').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',O[g.dataset.id].n)});
+function mark(id){fig.classList.toggle('sel',!!id);fig.querySelectorAll('[data-id]').forEach(e=>e.classList.toggle('on',e.dataset.id===id))}
+function show(id,step){const o=O[id];mark(id);
+ info.innerHTML=(step?`<p class="step">Adım ${step.i+1} / ${S.length}</p><h3>${step.h}</h3><p>${step.p}</p><hr style="border:0;border-top:1px solid var(--line);margin:14px 0">`:'')+
+ `<h3 style="font-size:${step?22:28}px">${o.n}</h3><div class="chips">${o.t.map(t=>`<span class="chip">${t}</span>`).join('')}</div><p>${o.g}</p>
+ <div class="row"><b>Mekanik</b><span>${o.m}</span></div><div class="row"><b>Kimyasal</b><span>${o.k}</span></div><div class="fact">${o.f}</div>`}
+let cur=-1;
+function go(i){cur=i;const s=S[i];bol.style.opacity=1;bol.style.transform=`translate(${s.x}px,${s.y}px)`;show(s.id,{...s,i});
+ $('#prev').disabled=i<=0;$('#next').disabled=i>=S.length-1;$('#go').textContent=i>=S.length-1?'Baştan başlat':'Yolculuk sürüyor…'}
+function pick(id){cur=-1;bol.style.opacity=0;$('#prev').disabled=$('#next').disabled=true;$('#go').textContent='Lokmanın yolculuğunu başlat';show(id)}
+fig.addEventListener('click',e=>{const t=e.target.closest('[data-id]');if(t)pick(t.dataset.id)});
+fig.addEventListener('keydown',e=>{const t=e.target.closest('.org');if(t&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(t.dataset.id)}});
+$('#go').onclick=()=>go(cur<0||cur>=S.length-1?0:cur+1);$('#next').onclick=()=>cur<S.length-1&&go(cur+1);$('#prev').onclick=()=>cur>0&&go(cur-1);
+document.addEventListener('keydown',e=>{if(cur<0||/INPUT|BUTTON/.test(e.target.tagName))return;if(e.key==='ArrowRight'&&cur<S.length-1)go(cur+1);if(e.key==='ArrowLeft'&&cur>0)go(cur-1)});
+info.innerHTML='<h3>Bir organa dokun</h3><p>Çizimdeki organlara ya da adlarına tıkla; görevini, mekanik ve kimyasal sindirimdeki rolünü gör.</p><p>Ya da <b>Lokmanın yolculuğunu başlat</b> düğmesiyle besinin izlediği yolu adım adım takip et. Klavyede ← → okları da çalışır.</p><div class="fact">Sindirim kanalı: ağız → yutak → yemek borusu → mide → ince bağırsak → kalın bağırsak → anüs.<br>Yardımcı organlar: karaciğer ve pankreas.</div>';
+$('#fs').onclick=e=>{e.preventDefault();try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(x){}};
+
+const G=[['Dişlerin besini çiğneyip öğütmesi','m'],['Dilin lokmayı karıştırması','m'],['Mide kaslarının besini ezip karıştırması','m'],['Safranın yağları küçük damlacıklara ayırması','m'],
+['Tükürükteki enzimin nişastayı parçalaması','k'],['Mide öz suyunun proteinleri parçalaması','k'],['Pankreas öz suyunun yağları yağ asidi ve gliserole ayırması','k'],['İnce bağırsakta karbonhidratların glikoza dönüşmesi','k']];
+let deck=[],done=0,right=0;
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+function deal(){deck=shuf(G);done=right=0;
+ $('#cards').innerHTML=deck.map((c,i)=>`<div class="c" id="g${i}"><div>${c[0]}</div><div class="b"><button data-i="${i}" data-a="m">Mekanik</button><button data-i="${i}" data-a="k">Kimyasal</button></div><div class="fb"></div></div>`).join('');score()}
+function score(){$('#gs').textContent=done===deck.length?`Tamamlandı: ${right} / ${deck.length} doğru`:`Doğru: ${right} · Kalan: ${deck.length-done}`}
+$('#cards').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,c=deck[i],el=$('#g'+i),ok=b.dataset.a===c[1];
+ el.classList.add(ok?'ok':'bad');el.querySelectorAll('button').forEach(x=>x.disabled=true);
+ el.querySelector('.fb').textContent=(ok?'Doğru! ':'Olmadı. ')+(c[1]==='m'?'Bu mekanik sindirimdir: enzim yok, besin yalnızca küçülür.':'Bu kimyasal sindirimdir: enzimler besini yapı taşlarına ayırır.');
+ done++;if(ok)right++;score()});
+$('#greset').onclick=deal;deal();
+
+const Q=[
+['Karbonhidratların kimyasal sindirimi nerede başlar?',['Mide','Ağız','İnce bağırsak','Kalın bağırsak'],1,'Tükürükteki enzim, nişastanın sindirimini ağızda başlatır.'],
+['Proteinlerin sindirimi hangi organda başlar?',['Mide','Ağız','Pankreas','Yemek borusu'],0,'Mide öz suyu proteinlerin kimyasal sindirimini başlatır.'],
+['Tüm besinlerin kimyasal sindirimi nerede tamamlanır?',['Mide','Kalın bağırsak','İnce bağırsak','Karaciğer'],2,'Pankreas öz suyu ve bağırsak öz suyuyla tüm besinlerin sindirimi ince bağırsakta biter.'],
+['Safra ile ilgili hangisi doğrudur?',['Pankreasta üretilir','Enzim içerir ve proteinleri sindirir','Karaciğerde üretilir, yağları küçük damlacıklara ayırır','Kalın bağırsakta su emer'],2,'Safra karaciğerde üretilir, safra kesesinde depolanır; enzim içermez, yağların mekanik sindirimine yardım eder.'],
+['Aşağıdakilerden hangisi sindirime uğramadan doğrudan emilir?',['Nişasta','Protein','Yağ','Vitamin'],3,'Su, vitamin ve mineraller küçük yapılı olduğu için sindirilmeden emilir.'],
+['Kalın bağırsağın temel görevi nedir?',['Proteinleri sindirmek','Su ve minerallerin emilimi','Safra üretmek','Yağları sindirmek'],1,'Kalın bağırsakta sindirim olmaz; artıklardan su ve mineraller emilir.'],
+['Sindirilmiş besinlerin kana geçmesini sağlayan yapılar hangisidir?',['Villuslar','Dişler','Gırtlak kapağı','Safra kesesi'],0,'İnce bağırsağın iç yüzeyindeki villuslar emilim yüzeyini artırır.'],
+['Hangisi sindirime yardımcı organdır ama besin içinden geçmez?',['Mide','Yemek borusu','Pankreas','İnce bağırsak'],2,'Karaciğer ve pankreas yardımcı organlardır; salgılarını ince bağırsağa gönderirler.'],
+['Yağların sonuç ürünü (yapı taşı) nedir?',['Glikoz','Amino asit','Yağ asidi ve gliserol','Vitamin'],2,'Yağlar ince bağırsakta yağ asidi ve gliserole ayrılır.']];
+let qi=0,qs=0,ans=false;
+function q(){const z=$('#quiz');if(qi>=Q.length){z.innerHTML=`<h3>Sonuç: ${qs} / ${Q.length}</h3><p>${qs===Q.length?'Harika! Sindirim sistemini çok iyi öğrenmişsin.':qs>=Q.length*.6?'Güzel! Yanlış yaptığın konulara organ panelinden tekrar göz at.':'Organları ve besin tablosunu tekrar inceleyip yeniden dene.'}</p><div class="ctl" style="justify-content:flex-start"><button id="qr">Yeniden başla</button></div>`;$('#qr').onclick=()=>{qi=qs=0;q()};return}
+ const [t,o]=Q[qi];ans=false;
+ z.innerHTML=`<p class="step">Soru ${qi+1} / ${Q.length} · Puan: ${qs}</p><div class="bar"><i style="width:${qi/Q.length*100}%"></i></div><h3 style="font-size:24px">${t}</h3><div class="opts">${o.map((x,i)=>`<button data-i="${i}">${'ABCD'[i]}) ${x}</button>`).join('')}</div><p id="qe" class="fact" hidden></p><div class="ctl" style="justify-content:flex-start"><button id="qn" hidden>Sonraki soru ›</button></div>`}
+$('#quiz').addEventListener('click',e=>{const b=e.target.closest('.opts button');if(b&&!ans){ans=true;const c=Q[qi][2],i=+b.dataset.i;
+ $('#quiz').querySelectorAll('.opts button').forEach((x,j)=>{x.disabled=true;if(j===c)x.classList.add('ok')});if(i!==c)b.classList.add('bad');else qs++;
+ const qe=$('#qe');qe.hidden=false;qe.textContent=(i===c?'Doğru! ':'Doğru cevap: '+'ABCD'[c]+'. ')+Q[qi][3];$('#qn').hidden=false;return}
+ if(e.target.id==='qn'){qi++;q()}});
+q();
+}
+</script>
+</body>
+</html>
