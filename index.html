@@ -67,8 +67,21 @@ button:hover{border-color:rgba(255,255,255,.35)}
 #sum ol{padding-left:1.3em;margin:10px 0}#sum li{margin:6px 0}
 #sum .k{font-weight:900;font-size:13px;padding:1px 8px;border-radius:99px;color:#111;margin-right:6px}
 .prod{font-size:18px;background:rgba(47,211,192,.12);border-radius:14px;padding:10px 14px}
-@media(max-width:700px){#hud{width:calc(100vw - 28px);top:auto;bottom:146px;right:14px}.run #hud{top:auto}#card{display:none}#title{top:10px;left:14px}#msg{bottom:76px;font-size:16px}
- #shelf{width:calc(100vw - 28px);bottom:300px}.foods{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.food svg{width:50px;height:50px}}
+body:not(.run) #ctl{left:auto;right:14px;transform:none}
+.shelf-link{display:block;margin-top:12px;text-align:center;color:#f3d34a;font-weight:800}
+@media(max-width:700px){
+ #stage{top:150px;bottom:196px}
+ #hud{left:10px;right:10px;top:10px;width:auto;gap:8px}
+ .cnt{padding:6px 10px;border-radius:14px}.cnt .h{font-size:15px;gap:6px}.cnt .h i{width:14px;height:14px;border-width:2px}.cnt .v{font-size:28px}
+ #card{display:none!important}
+ #title{top:88px;left:12px;right:12px}#title h1{font-size:30px;border-bottom-width:4px;padding-bottom:2px}#title h2{font-size:17px;margin-top:2px}
+ #msg{bottom:68px;font-size:15px;padding:10px 12px;max-height:122px;overflow-y:auto;width:calc(100vw - 20px)}
+ #ctl{bottom:10px;gap:8px;width:calc(100vw - 20px);justify-content:center}#ctl button,#ctl a{font-size:15px!important;padding:6px 12px!important;min-height:44px}
+ body:not(.run) #ctl{left:50%;right:auto;transform:translateX(-50%)}
+ #fs{display:none!important}
+ #shelf{left:10px;right:10px;top:10px;bottom:10px;width:auto;z-index:6}
+ .foods{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}.food svg{width:48px;height:48px}.food b{font-size:16px}.food small{font-size:12px;white-space:nowrap}.tag{font-size:11px;padding:2px 7px}#shelf{background:rgba(34,40,46,.98)}
+}
 @media(prefers-reduced-motion:reduce){.ring{animation:none;opacity:.8}#shelf{transition:none}}
 </style>
 </head>
@@ -115,7 +128,7 @@ button:hover{border-color:rgba(255,255,255,.35)}
 
 <div id="title"><h1 id="tt">AĞIZ</h1><h2 id="ts"></h2></div>
 
-<aside id="shelf" aria-label="Besinler"><h2>Bir besin seç</h2><div class="foods" id="foods"></div></aside>
+<aside id="shelf" aria-label="Besinler"><h2>Bir besin seç</h2><div class="foods" id="foods"></div><a class="shelf-link" href="ders.html">Konu anlatımına git →</a></aside>
 
 <div id="hud">
  <div class="cnt" id="cf"><div class="h"><i></i>FİZİKSEL</div><div class="v"><em id="fv">0</em><span>/<b id="ft">0</b></span></div></div>
@@ -124,7 +137,7 @@ button:hover{border-color:rgba(255,255,255,.35)}
 </div>
 
 <div id="msg" hidden><div id="mt"></div><div id="hint"></div></div>
-<div id="ctl"><a href="ders.html" style="font:800 17px Nunito,sans-serif;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:16px;min-height:48px;padding:8px 18px;display:inline-flex;align-items:center;text-decoration:none">Ders anlatımı</a><button id="rs">↺ Sıfırla</button><button id="fs">⛶ Tam ekran</button></div>
+<div id="ctl"><a href="ders.html" style="font:800 17px Nunito,sans-serif;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:16px;min-height:48px;padding:8px 18px;display:inline-flex;align-items:center;text-decoration:none">Konu anlatımı</a><button id="rs">↺ Sıfırla</button><button id="fs">⛶ Tam ekran</button></div>
 
 <div id="sum" hidden><div class="box" id="sb"></div></div>
 
@@ -170,9 +183,9 @@ function plan(f){const m=f.m,su=m==='su',fn=f.n.toLowerCase(),S=[];
  if(m==='yag')c.push({t:'safra',s:'SAFRA',h:'Safra kesesine dokun.',k:'f',fx:'bile',x:'Karaciğerde üretilip safra kesesinde depolanan safra, yağı küçük damlacıklara ayırdı. Safrada enzim yoktur; bu mekanik sindirimdir.'});
  if(P[m])c.push({t:'pankreas',s:'PANKREAS',h:'Pankreasa dokun, pankreas öz suyunu gönder.',k:'k',fx:'enzyme',x:'Pankreas öz suyundaki enzimler sindirimi tamamladı: '+P[m][1].toLowerCase()+' → '+P[m][0]+'. Tüm besinlerin kimyasal sindirimi ince bağırsakta biter.'});
  else if(m==='vit')c.push({t:'pankreas',s:'PANKREAS',h:'Pankreasa dokun.',k:'k',fx:'enzyme',x:'Pankreas öz suyu, '+fn+'daki karbonhidratları glikoza parçaladı (kimyasal sindirim).'});
- c.push({t:'ince',s:'EMİLİM',h:'İnce bağırsağa dokun, besinleri kana geçir.',k:'n',fx:'absorb',x:su?'Suyun büyük kısmı ince bağırsakta kana emildi.':m==='vit'?'Vitamin ve mineraller sindirilmeden, glikoz ise sindirildikten sonra villuslardan kana geçti.':'Yapı taşları ('+P[m][0]+') ince bağırsaktaki villuslardan kana geçti.'});
+ c.push({t:'ince',s:'EMİLİM',h:'İnce bağırsağa dokun, besinleri kana geçir.',k:'n',fx:'absorb',x:su?'Su sindirilmez; bir kısmı ince bağırsakta da kana geçer.':m==='vit'?'Vitamin ve mineraller sindirilmeden, glikoz ise sindirildikten sonra villuslardan kana geçti.':'Yapı taşları ('+P[m][0]+') ince bağırsaktaki villuslardan kana geçti.'});
  S.push({id:'ince',n:'İNCE BAĞIRSAK',a:c});
- S.push({id:'kalin',n:'KALIN BAĞIRSAK',a:[{t:'kalin',s:'SU EMİLİMİ',h:'Kalın bağırsağa dokun.',k:'n',fx:'water',x:su?'Kalan su kalın bağırsakta emildi. Fazla su böbreklerle idrar olarak atılır (boşaltım sistemi).':'Kalın bağırsakta su ve mineraller emildi, artıklar katılaştı. Burada sindirim yapılmaz.'+(m==='vit'?' Lifler sindirilmez ama bağırsakların çalışmasına yardım eder.':'')}]});
+ S.push({id:'kalin',n:'KALIN BAĞIRSAK',a:[{t:'kalin',s:'SU EMİLİMİ',h:'Kalın bağırsağa dokun.',k:'n',fx:'water',x:su?'Su, vitamin ve mineraller kalın bağırsakta kana emildi. Fazla su böbreklerle idrar olarak atılır (boşaltım sistemi).':'Kalın bağırsakta su ve mineraller emildi, artıklar katılaştı. Burada sindirim yapılmaz.'+(m==='vit'?' Lifler sindirilmez ama bağırsakların çalışmasına yardım eder.':'')}]});
  if(!su)S.push({id:'anus',n:'ANÜS',a:[{t:'anus',s:'ATILIM',h:'Anüse dokun.',k:'n',fx:'',x:'Sindirilemeyen artıklar dışkı olarak anüsten atıldı.'}]});
  return S}
 
