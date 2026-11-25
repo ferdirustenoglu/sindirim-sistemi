@@ -86,6 +86,36 @@ select.ok{border-color:var(--ok)}select.bad{border-color:var(--bad)}
 .vil{transition:transform .9s ease;transform-box:fill-box;transform-origin:50% 100%}
 .flat .vil{transform:scaleY(.22)}
 ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
+
+.road{margin-bottom:22px;border-color:var(--coral)}.road ol{margin:6px 0 0;padding-left:1.3em;font-size:18px}.road li{margin:4px 0}
+.ic{display:inline-block;width:76px;height:76px;border-radius:50%;background:var(--bg);border:3px solid var(--ink);padding:8px;flex:none}.ic svg{width:100%;height:100%}
+.tree{margin:16px 0}.troot{margin:0 auto;width:max-content;background:#f6d531;color:#222;font:800 24px "Baloo 2",sans-serif;padding:8px 26px;border:3px solid #222;position:relative}
+.troot::after{content:"";position:absolute;left:50%;top:100%;height:18px;border-left:3px solid var(--ink)}
+.tkids{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px;padding-top:18px;border-top:3px solid var(--ink);position:relative}
+.tk{text-align:center;position:relative}.tk::before{content:"";position:absolute;left:50%;top:-18px;height:18px;border-left:3px solid var(--ink)}
+.tk .tb{background:#f6d531;color:#222;border:3px solid #222;font:800 19px/1.15 "Baloo 2",sans-serif;padding:10px 6px;min-height:64px;display:grid;place-items:center}
+.tk .ic{width:96px;height:96px;margin:10px auto 4px;display:block}.tk small{display:block;font-size:14px;color:var(--soft)}.tk p{margin:4px 0;font-weight:800}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;margin-top:14px}.half{padding:6px 20px}.half+.half{border-left:3px dashed var(--line)}
+.hf{color:var(--f)}.hk{color:var(--k)}.ics{display:flex;gap:14px;margin:12px 0}
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:6px 2px;margin:14px 0}.pc{display:flex;flex-direction:column;align-items:center;gap:4px;width:96px}.pc b{color:#b5309c;font-size:15px;text-align:center;line-height:1.15}.pa{font-size:26px;color:var(--soft);font-weight:900}
+.nums{display:grid;gap:8px}.nb{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;border:2px solid var(--ink);padding:8px 12px;cursor:pointer;background:var(--bg);text-align:left;font:inherit;color:inherit;border-radius:0;min-height:44px}.nb:hover{background:var(--card)}.nb i{font-style:normal;font:800 20px "Baloo 2",sans-serif;color:var(--f)}.nb span{color:#b5309c;font-weight:800}
+.op{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.op ul{padding-left:1.2em;font-size:18px}.op li{margin:8px 0}
+.ft{width:auto;min-width:min(100%,380px);margin:12px 0;border:3px solid var(--k)}.ft td{border:2px solid var(--k);font-size:18px;padding:10px 16px}.ft td:nth-child(2){text-align:center;font-size:26px;font-weight:900;width:70px}.ft td:nth-child(3){font-weight:700;color:var(--k)}
+.ok2{color:var(--ok)}.no2{color:var(--bad)}
+.ill{background:var(--card);border-radius:22px;padding:10px;border:1px solid var(--line)}
+.ab{display:flex;gap:14px;align-items:center}
+.hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px}.hc{display:flex;gap:12px;align-items:center;background:var(--card);border-radius:18px;padding:12px;font-weight:800;font-size:18px}.hc em{font-style:normal;font-size:22px;margin-left:auto}
+@keyframes chew{to{transform:translateY(10px)}}.chew{animation:chew .6s ease-in-out infinite alternate}
+@keyframes down{0%{transform:translateY(0)}100%{transform:translateY(150px)}}.down{animation:down 2.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}.spin{transform-box:fill-box;transform-origin:center;animation:spin 3s linear infinite}
+@keyframes drip{0%{transform:translateY(0);opacity:1}100%{transform:translateY(40px);opacity:0}}.drip{animation:drip 1.6s ease-in infinite}
+@keyframes outL{0%{transform:translate(0,0);opacity:1}100%{transform:translate(-40px,0);opacity:0}}@keyframes outR{0%{transform:translate(0,0);opacity:1}100%{transform:translate(40px,0);opacity:0}}
+.outL{animation:outL 1.8s ease-out infinite}.outR{animation:outR 1.8s ease-out infinite}
+@keyframes flex{50%{transform:scale(1.04)}}.flex{transform-box:fill-box;transform-origin:center;animation:flex 1.2s ease-in-out infinite}
+@media(max-width:860px){.op{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.tkids{grid-template-columns:repeat(2,minmax(0,1fr));border-top:0;padding-top:0}.tk::before,.troot::after{display:none}.split{grid-template-columns:minmax(0,1fr)}.half{padding:6px 0}.half+.half{border-left:0;border-top:3px dashed var(--line);padding-top:14px}.pc{width:78px}.pc .ic{width:62px;height:62px}.pa{font-size:20px}.ft td{font-size:16px;padding:8px 10px}.op ul{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.chew,.down,.spin,.drip,.outL,.outR,.flex{animation:none}}
 @media(max-width:860px){.two{grid-template-columns:minmax(0,1fr)}.panel{position:static}}
 @media(max-width:600px){body{font-size:16px}.lead{font-size:17px}.tl li{grid-template-columns:minmax(0,1fr) auto;}.tl li span:last-child{grid-column:1/-1}
  table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8.5em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:8em;margin-inline-start:-8.5em;white-space:normal;color:var(--soft);font-weight:700}.stack td:empty{display:none}
@@ -104,26 +134,25 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
 </header>
 <main>
 
-<section class="ch" id="besinler" data-t="1. Besinler">
- <h2>Önce besinleri hatırlayalım</h2>
- <p class="lead">Besinleri altı besin öğesine ayırırız: karbonhidrat, protein, yağ, su, mineral ve vitamin. Her birinin görevi farklıdır.</p>
- <div class="grid" style="margin-top:14px">
-  <div class="card"><h3>Karbonhidratlar</h3><span class="key" style="background:#e39a2b">Enerji verici</span><p>Ekmek, makarna, pirinç, patates; buğdaydan yapılan her şey.</p><p class="yes">Sindirilir ✓</p></div>
-  <div class="card"><h3>Proteinler</h3><span class="key" style="background:#d9473f">Yapıcı ve onarıcı</span><p>Et, süt, yumurta, peynir, baklagiller.</p><p class="yes">Sindirilir ✓</p></div>
-  <div class="card"><h3>Yağlar</h3><span class="key" style="background:#c9a20c">Enerji verici ve yapıcı</span><p>Tereyağı, zeytinyağı, fındık, ceviz.</p><p class="yes">Sindirilir ✓</p></div>
-  <div class="card"><h3>Su, mineral, vitamin</h3><span class="key" style="background:#3c9a55">Düzenleyici</span><p>Su, meyve ve sebzeler, süt. A, B, C, D, E, K vitaminleri.</p><p class="no">Sindirilmez ✗</p></div>
- </div>
- <div class="box"><span class="big">Karbonhidrat, protein ve yağ sindirilir. Su, mineral ve vitamin sindirilmez.</span><br>Çünkü su, mineral ve vitaminler zaten çok küçüktür; daha küçük parçalara ayrılmadan doğrudan kana geçerler.</div>
+<section class="ch" id="besinler" data-t="Besinler">
+ <div class="road card"><h3>Yol haritamız</h3><ol><li><b>Sindirim sistemi:</b> besinler, sindirim nedir, besinin yolu</li><li><b>Sindirim sistemini oluşturan yapı ve organlar</b></li><li><b>Sindirim sisteminin sağlığı</b></li></ol></div>
+ <h2>Besinleri hatırlayalım</h2>
+ <div class="tree"><div class="troot">BESİNLER</div><div class="tkids" id="tree"></div></div>
+ <div class="box"><span class="big">Karbonhidrat, protein ve yağ sindirilir. Su, mineral ve vitamin sindirilmez.</span><br>Su, mineral ve vitaminler zaten çok küçüktür; daha küçük parçalara ayrılmadan doğrudan kana geçerler.</div>
  <div class="box tip">Vücudumuzun yarısından fazlası sudur. Düzenli su içmek sindirim sisteminin sağlığı için de çok önemlidir.</div>
 </section>
 
-<section class="ch" id="sindirim" data-t="2. Sindirim nedir?">
+<section class="ch" id="sindirim" data-t="Sindirim nedir?">
  <h2>Sindirim nedir?</h2>
  <div class="box"><span class="big">Besinlerin kana geçebilecek kadar küçük parçalara ayrılmasına sindirim denir.</span></div>
- <figure class="card" style="padding:10px;overflow-x:auto"><svg style="min-width:560px" viewBox="0 0 760 210" role="img" aria-label="Büyük lokmanın önce fiziksel sonra kimyasal sindirimle küçülüp kana geçmesi">
+ <div class="split">
+  <div class="half"><h3 class="hf">Fiziksel sindirim</h3><p>Besinler <b>mekanik olarak</b> küçük parçalara ayrılır. Besin küçülür ama yapısı değişmez.</p><div class="ics"><span class="ic" data-ic="mouth"></span><span class="ic" data-ic="stomach"></span></div><p><b>Örnek:</b> çiğneme (dişler), dilin karıştırması, mide kaslarının çalkalaması, safranın yağı damlacıklara ayırması.</p></div>
+  <div class="half"><h3 class="hk">Kimyasal sindirim</h3><p><b>Enzim ve su</b> yardımıyla besinler daha küçük <b>yapı taşlarına</b> ayrılır. Anahtar kelime: <b>ENZİM</b>.</p><div class="ics"><span class="ic" data-ic="enzyme"></span><span class="ic" data-ic="drop"></span></div><p><b>Örnek:</b> tükürük, mide öz suyu, pankreas öz suyu.</p></div>
+ </div>
+ <figure class="card" style="padding:10px;overflow-x:auto;margin-top:14px"><svg style="min-width:560px" viewBox="0 0 760 210" role="img" aria-label="Büyük lokmanın önce fiziksel sonra kimyasal sindirimle küçülüp kana geçmesi">
   <rect x="20" y="62" width="110" height="86" rx="22" fill="#e3a65a"/><text x="75" y="178" text-anchor="middle" class="lbl">Büyük lokma</text>
   <path d="M146,105 H236" stroke="var(--f)" stroke-width="5" marker-end="url(#af)"/><text x="190" y="88" text-anchor="middle" class="lbl" style="fill:var(--f)">Fiziksel</text>
-  <defs><marker id="af" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8Z" fill="var(--f)"/></marker><marker id="ak" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8Z" fill="var(--k)"/></marker></defs>
+  <defs><marker id="af" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16Z" fill="var(--f)"/></marker><marker id="ak" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16Z" fill="var(--k)"/></marker></defs>
   <g fill="#e3a65a"><rect x="254" y="66" width="34" height="30" rx="8"/><rect x="298" y="74" width="30" height="28" rx="8"/><rect x="262" y="110" width="30" height="28" rx="8"/><rect x="304" y="114" width="34" height="30" rx="8"/></g>
   <text x="296" y="178" text-anchor="middle" class="lbl">Küçük parçalar</text>
   <path d="M356,105 H446" stroke="var(--k)" stroke-width="5" marker-end="url(#ak)"/><text x="400" y="88" text-anchor="middle" class="lbl" style="fill:var(--k)">Kimyasal (enzim)</text>
@@ -133,11 +162,7 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
   <g fill="#f2c84b"><circle cx="640" cy="90" r="4"/><circle cx="668" cy="118" r="4"/><circle cx="695" cy="96" r="4"/><circle cx="652" cy="130" r="4"/></g>
   <path d="M548,105 H584" stroke="var(--e)" stroke-width="5"/><text x="665" y="196" text-anchor="middle" class="lbl" style="fill:var(--e)">Kan damarına geçer</text>
  </svg></figure>
- <div class="grid" style="margin-top:14px">
-  <div class="card" style="border-color:var(--f)"><h3 style="color:var(--f)">Fiziksel (mekanik) sindirim</h3><p>Besin parçalanır, karıştırılır, çalkalanır. Besin <b>küçülür</b> ama yapısı değişmez.</p><p>Örnekler: <b>dişler</b> (öğütme), <b>dil</b> (karıştırma), <b>mide kasları</b> (çalkalama), <b>safra</b> (yağı damlacıklara ayırma).</p></div>
-  <div class="card" style="border-color:var(--k)"><h3 style="color:var(--k)">Kimyasal sindirim</h3><p>Anahtar kelime: <b style="font-size:20px">ENZİM</b>. Vücudumuzun ürettiği enzimler besinlere yapışır ve onları su yardımıyla <b>yapı taşlarına</b> ayırır.</p><p>Örnekler: <b>tükürük</b>, <b>mide öz suyu</b>, <b>pankreas öz suyu</b>.</p></div>
- </div>
- <div class="box tip">Ağzına bir lokma poğaça alıp üzerine bir yudum çay içtiğinde poğaçanın nasıl yumuşayıp dağıldığını düşün. Enzimler de besinleri böyle, su yardımıyla küçücük parçalara ayırır.</div>
+  <div class="box tip">Ağzına bir lokma poğaça alıp üzerine bir yudum çay içtiğinde poğaçanın nasıl yumuşayıp dağıldığını düşün. Enzimler de besinleri böyle, su yardımıyla küçücük parçalara ayırır.</div>
  <div class="box"><b>Önce fiziksel, sonra kimyasal sindirim olur.</b> Çiğneme ile küçülen besinin yüzey alanı artar; enzimler daha geniş yüzeyden etki eder. Fiziksel sindirim tek başına besini kana geçecek kadar küçültemez; kimyasal sindirim şarttır.</div>
  <h3 style="margin-top:22px">Etkinlik: Mekanik mi, kimyasal mı?</h3>
  <p id="gs" class="big" style="font-size:20px"></p>
@@ -145,17 +170,19 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
  <p><button class="ghost" id="greset">Karıştır ve yeniden başla</button></p>
 </section>
 
-<section class="ch" id="yol" data-t="3. Besinin yolu">
- <h2>Besinin izlediği yol</h2>
- <p class="lead">Sindirim sisteminin <b>giriş noktası ağız</b>, <b>çıkış noktası anüstür</b>. Besin aradaki organlardan sırayla geçer:</p>
- <div class="chain"><span class="g">Ağız (giriş)</span><i>→</i><span>Yutak</span><i>→</i><span>Yemek borusu</span><i>→</i><span>Mide</span><i>→</i><span>İnce bağırsak</span><i>→</i><span>Kalın bağırsak</span><i>→</i><span class="x">Anüs (çıkış)</span></div>
+<section class="ch" id="yol" data-t="Besinin yolu">
+ <h2>Besinlerin izlediği yol</h2>
+ <p class="lead">Besinler <b>ağızdan anüse</b> kadar belirli bir yol izler. Giriş noktası ağız, çıkış noktası anüstür.</p>
+ <div class="path" id="path"></div>
+ <h3 style="margin-top:22px">Sindirim sistemi organları</h3>
  <div class="two">
   <figure><svg id="fig" viewBox="0 0 520 580" role="img" aria-label="Sindirim sistemi organları"></svg></figure>
-  <aside class="card panel" id="info" aria-live="polite"></aside>
+  <div><div class="nums" id="nums"></div><aside class="card" id="info" aria-live="polite" style="margin-top:12px"></aside></div>
  </div>
 </section>
+<div id="organs"></div>
 
-<section class="ch" id="yardimci" data-t="4. Yardımcı organlar">
+<section class="ch" id="yardimci" data-t="Yardımcı organlar">
  <h2>Sindirime yardımcı organlar</h2>
  <p class="lead">Karaciğer ve pankreastan <b>besin geçmez</b>. Bu organlar ürettikleri sıvıları <b>ince bağırsağa</b> gönderir; ince bağırsakla birlikte çalışırlar.</p>
  <div class="two" style="margin-top:12px">
@@ -176,9 +203,10 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
  </div>
 </section>
 
-<section class="ch" id="emilim" data-t="5. Emilim">
+<section class="ch" id="emilim" data-t="Emilim">
  <h2>Emilim ve villuslar</h2>
- <div class="box"><span class="big">Sindirilmiş besinlerin kana geçmesine emilim denir.</span></div>
+ <div class="box"><span class="big">Sindirilmiş besinlerin kana karışmasına emilim denir.</span></div>
+ <div class="grid" style="margin-bottom:16px"><div class="card ab"><span class="ic" data-ic="bread"></span><div><b>Karbonhidrat, yağ ve protein</b> emilimi<br><span class="big" style="color:var(--k)">ince bağırsakta</span></div></div><div class="card ab"><span class="ic" data-ic="drop"></span><div><b>Su, vitamin ve mineral</b> emilimi<br><span class="big" style="color:var(--k)">kalın bağırsakta</span></div></div></div>
  <div class="two">
   <figure class="card" style="padding:8px" id="vf"><svg id="vsv" viewBox="0 0 600 320" role="img" aria-label="İnce bağırsak iç yüzeyindeki villuslar ve kana geçen besinler"></svg></figure>
   <div>
@@ -194,7 +222,7 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
  </div>
 </section>
 
-<section class="ch" id="besinyolu" data-t="6. Besinler nasıl sindirilir?">
+<section class="ch" id="besinyolu" data-t="Besinler nasıl sindirilir?">
  <h2>Besinler nasıl sindirilir?</h2>
  <p class="lead">Bir besin seç ve her organda ne olduğunu takip et. Aynısını oyunda kendin de yapabilirsin.</p>
  <div class="tabs" id="ftabs"></div>
@@ -208,23 +236,24 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
  </tbody></table>
 </section>
 
-<section class="ch" id="ozet" data-t="7. Özet tablo">
+<section class="ch" id="ozet" data-t="Özet tablo">
  <h2>Özet: hangi organda ne olur?</h2>
  <p class="lead">Kısayol: <b>Ağız → karbonhidrat</b>, <b>mide → protein</b>, <b>ince bağırsak → üçü de (KPY)</b>.</p>
  <table class="stack" style="margin-top:10px"><thead><tr><th>Organ</th><th>Fiziksel</th><th>Kimyasal</th><th>Emilim</th><th>Aklında kalsın</th></tr></thead><tbody id="otb"></tbody></table>
  <div class="box">Ağızda ve midede hem fiziksel hem kimyasal sindirim vardır. Yutak, yemek borusu ve anüste sindirim yoktur. Kalın bağırsakta sindirim yoktur, yalnızca emilim vardır.</div>
 </section>
 
-<section class="ch" id="saglik" data-t="8. Sağlık">
+<section class="ch" id="saglik" data-t="Sağlık">
  <h2>Sindirim sisteminin sağlığı</h2>
- <div class="grid">
-  <div class="card"><h3>Neler yapmalıyız?</h3><ul class="clean"><li>Dengeli beslenmek, sebze ve meyve ağırlıklı yemek</li><li>Yeterince su içmek</li><li>Besinleri iyice çiğnemek</li><li>Düzenli hareket ve egzersiz yapmak</li><li>Yemeklerden önce ve sonra elleri yıkamak, dişleri fırçalamak</li></ul></div>
-  <div class="card"><h3>Nelerden kaçınmalıyız?</h3><ul class="clean"><li>Aşırı yağlı ve çok baharatlı besinler</li><li>Paketli gıdalar ve fast food</li><li>Çok sıcak veya çok soğuk besinler</li><li>Öğün atlamak, çok hızlı yemek</li></ul></div>
+ <p class="lead">Sağlıklı bir sindirim sistemi için günlük hayatımızda bazı alışkanlıklar edinmeliyiz.</p>
+ <div class="hl" id="hl"></div>
+ <div class="grid" style="margin-top:16px">
+  <div class="card"><h3>Ayrıca</h3><ul class="clean"><li>Besinleri iyice çiğneyerek yemek</li><li>Çok baharatlı, çok sıcak ve çok soğuk besinlerden kaçınmak</li><li>Yemeklerden önce ve sonra elleri yıkamak, dişleri fırçalamak</li><li>Öğün atlamamak</li></ul></div>
   <div class="card"><h3>Sık görülen rahatsızlıklar</h3><ul class="clean"><li><b>Gastrit ve ülser:</b> mide iç yüzeyinin tahriş olması, yara oluşması</li><li><b>Reflü:</b> mide içeriğinin yemek borusuna kaçması</li><li><b>Kabızlık:</b> lifsiz beslenme, az su</li><li><b>İshal:</b> çoğunlukla mikroplu su ve besinler</li></ul></div>
  </div>
 </section>
 
-<section class="ch" id="sorular" data-t="9. Soru çözelim">
+<section class="ch" id="sorular" data-t="Soru çözelim">
  <h2>Soru çözelim</h2>
  <p class="lead">Yazılı ve yeni nesil (bağlam temelli) sorulara benzer sorular.</p>
  <div class="quiz" id="quiz"></div>
@@ -243,9 +272,75 @@ ul.clean{padding-left:1.2em}ul.clean li{margin:6px 0}
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ---- simgeler ----
+const IC={
+bread:'<rect x="6" y="16" width="52" height="36" rx="15" fill="#c77a2e"/><rect x="12" y="22" width="40" height="25" rx="10" fill="#f3d39a"/><path d="M20,22 Q24,30 22,40 M32,22 Q36,30 34,40 M44,22 Q48,30 46,40" stroke="#c77a2e" stroke-width="2" fill="none"/>',
+meat:'<ellipse cx="26" cy="28" rx="21" ry="16" fill="#b3322c"/><path d="M11,27 Q26,18 41,29" stroke="#f6c9c2" stroke-width="3" fill="none"/><ellipse cx="46" cy="44" rx="11" ry="13" fill="#f4e2c4" stroke="#c9a36a" stroke-width="2"/>',
+oil:'<path d="M20,10 H32 V20 Q42,27 42,42 Q42,56 26,56 Q10,56 10,42 Q10,27 20,20Z" fill="#f2c230" stroke="#b8890a" stroke-width="2"/><rect x="21" y="5" width="10" height="7" rx="2" fill="#8a5a2c"/><path d="M38,48 L56,44 L60,51 L42,55Z" fill="#fff0a0" stroke="#c9a20c"/>',
+water:'<path d="M6,12 H30 L27,54 H9Z" fill="#dcefff" stroke="#8fb8e0" stroke-width="2"/><path d="M8,28 H28 L27,54 H9Z" fill="#5aa9f0"/><circle cx="45" cy="44" r="13" fill="#e23b2e"/><path d="M45,31 V25" stroke="#6b3d1f" stroke-width="3"/><path d="M46,28 Q55,20 57,29Z" fill="#4caf50"/>',
+plate:'<ellipse cx="32" cy="40" rx="27" ry="13" fill="#f4f4f4" stroke="#bbb" stroke-width="2"/><circle cx="22" cy="34" r="9" fill="#e3a65a"/><circle cx="38" cy="32" r="8" fill="#58c26b"/><circle cx="32" cy="41" r="7" fill="#ef5b5b"/>',
+mouth:'<ellipse cx="32" cy="32" rx="27" ry="20" fill="#d9473f"/><ellipse cx="32" cy="33" rx="20" ry="13" fill="#5a1a22"/><g fill="#fff"><rect x="15" y="21" width="6" height="7" rx="1.5"/><rect x="22" y="20" width="6" height="8" rx="1.5"/><rect x="29" y="20" width="6" height="8" rx="1.5"/><rect x="36" y="20" width="6" height="8" rx="1.5"/><rect x="43" y="21" width="6" height="7" rx="1.5"/><rect x="18" y="38" width="6" height="6" rx="1.5"/><rect x="25" y="39" width="6" height="6" rx="1.5"/><rect x="32" y="39" width="6" height="6" rx="1.5"/><rect x="39" y="38" width="6" height="6" rx="1.5"/></g><ellipse cx="32" cy="36" rx="11" ry="4" fill="#f2a0a8"/>',
+yutak:'<path d="M18,6 Q42,4 46,24 L52,32 L45,35 Q46,45 37,47 V60 H20 V44 Q8,36 10,20 Q12,8 18,6Z" fill="#f6d2c4" stroke="#c98b74" stroke-width="2"/><path d="M27,30 Q35,31 33,40 V60" stroke="#e2604a" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M38,40 V60" stroke="#9bb7d8" stroke-width="5" stroke-linecap="round"/>',
+eso:'<rect x="23" y="2" width="18" height="60" rx="9" fill="#ec9aa0" stroke="#c45c66" stroke-width="2"/><ellipse cx="32" cy="30" rx="6" ry="10" fill="#e3a65a"/><path d="M23,18 Q32,22 41,18 M23,44 Q32,48 41,44" stroke="#c45c66" stroke-width="2" fill="none"/>',
+stomach:'<path d="M24,4 V14 C36,8 58,14 58,34 C58,52 42,62 26,58 C12,55 12,45 22,43 C34,41 40,34 34,22 C32,16 28,14 24,14" fill="#e8834f" stroke="#b9572a" stroke-width="2"/>',
+small:'<path d="M12,14 H50 Q57,14 57,21 Q57,28 50,28 H14 Q7,28 7,35 Q7,42 14,42 H50 Q57,42 57,49 Q57,56 50,56 H18" fill="none" stroke="#f08f8f" stroke-width="7" stroke-linecap="round"/>',
+large:'<path d="M14,56 V14 Q14,7 21,7 H43 Q50,7 50,14 V48 Q50,55 42,55 H34 V62" fill="none" stroke="#c98868" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>',
+anus:'<path d="M26,2 Q34,14 28,26 Q22,38 32,46" fill="none" stroke="#c98868" stroke-width="12" stroke-linecap="round"/><circle cx="33" cy="54" r="6" fill="#8a4b36"/>',
+enzyme:'<g fill="#3aa35b"><circle cx="9" cy="46" r="6"/><circle cx="21" cy="46" r="6"/><circle cx="33" cy="46" r="6"/></g><path d="M9,46 H33" stroke="#1f6b39" stroke-width="2"/><g fill="#3aa35b"><circle cx="46" cy="36" r="5"/><circle cx="56" cy="48" r="5"/><circle cx="47" cy="57" r="5"/></g><path d="M22,8 L42,34 M42,8 L22,34" stroke="#555" stroke-width="3.5" stroke-linecap="round"/><circle cx="19" cy="6" r="5" fill="none" stroke="#0b857a" stroke-width="3"/><circle cx="45" cy="6" r="5" fill="none" stroke="#0b857a" stroke-width="3"/>',
+drop:'<path d="M32,4 C44,22 52,33 52,43 A20,20 0 0 1 12,43 C12,33 20,22 32,4Z" fill="#4f9fe8"/><ellipse cx="24" cy="44" rx="4" ry="8" fill="#fff" fill-opacity=".55"/>',
+veg:'<ellipse cx="32" cy="44" rx="27" ry="13" fill="#f4f4f4" stroke="#bbb" stroke-width="2"/><circle cx="22" cy="34" r="10" fill="#3f9f45"/><circle cx="40" cy="32" r="9" fill="#e23b2e"/><circle cx="32" cy="40" r="7" fill="#f08a24"/><circle cx="46" cy="42" r="6" fill="#8bc34a"/>',
+bottle:'<rect x="21" y="16" width="22" height="44" rx="7" fill="#dcefff" stroke="#8fb8e0" stroke-width="2"/><rect x="25" y="6" width="14" height="10" rx="2" fill="#3c7fd0"/><rect x="23" y="32" width="18" height="26" rx="5" fill="#5aa9f0"/>',
+junk:'<path d="M10,30 Q32,6 54,30Z" fill="#d9903a"/><rect x="10" y="31" width="44" height="5" fill="#58c26b"/><rect x="10" y="36" width="44" height="8" rx="3" fill="#7a3b1f"/><path d="M10,46 H54 Q54,56 32,56 Q10,56 10,46Z" fill="#d9903a"/><path d="M6,6 L58,58" stroke="#d32f2f" stroke-width="6" stroke-linecap="round"/>',
+run:'<circle cx="38" cy="10" r="7" fill="#e3a65a"/><path d="M35,19 L29,36 L38,46 L33,60 M29,36 L17,48 M34,23 L47,30 M34,23 L21,27" stroke="#3c7fd0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'};
+const icon=k=>`<svg viewBox="0 0 64 64" aria-hidden="true">${IC[k]}</svg>`;
+$('#tree').innerHTML=[['Karbonhidratlar','bread','Ekmek','Enerji verici','Sindirilir ✓'],['Proteinler','meat','Et','Yapıcı, onarıcı','Sindirilir ✓'],['Yağlar','oil','Tereyağı','Enerji verici, yapıcı','Sindirilir ✓'],['Su, mineral, vitamin','water','Su, meyve','Düzenleyici','Sindirilmez ✗']].map(([n,i,o,g,d])=>`<div class="tk"><div class="tb">${n}</div><span class="ic">${icon(i)}</span><p><span style="color:var(--f)">Ör:</span> ${o}</p><small>${g}</small><small class="${d.includes('✗')?'no':'yes'}">${d}</small></div>`).join('');
+$('#path').innerHTML=[['plate','Besin'],['mouth','Ağız'],['yutak','Yutak'],['eso','Yemek borusu'],['stomach','Mide'],['small','İnce bağırsak'],['large','Kalın bağırsak'],['anus','Anüs']].map(([i,n],k)=>(k?'<span class="pa">→</span>':'')+`<div class="pc"><span class="ic">${icon(i)}</span><b>${n}</b></div>`).join('');
+$('#hl').innerHTML=[['veg','Dengeli beslen','✓','ok2'],['bottle','Yeterli su iç','✓','ok2'],['junk','Aşırı yağlı ve paketli gıdalardan kaçın','✗','no2'],['run','Düzenli hareket et','✓','ok2']].map(([i,t,m,c])=>`<div class="hc"><span class="ic">${icon(i)}</span><span>${t}</span><em class="${c}">${m}</em></div>`).join('');
+document.querySelectorAll('[data-ic]').forEach(e=>e.innerHTML=icon(e.dataset.ic));
+// numaralı organ kutuları
+const NUM=[['agiz','Ağız','Çiğneme ve tükürük'],['yutak','Yutak','Besini yemek borusuna iletir'],['yemek','Yemek borusu','Mideye taşır'],['mide','Mide','Kasılıp karıştırır, protein sindirimi başlar'],['ince','İnce bağırsak','Sindirim ve emilim'],['kalin','Kalın bağırsak','Su emilir'],['anus','Anüs','Atıkların çıkışı']];
+$('#nums').innerHTML=NUM.map(([id,n,t],i)=>`<button class="nb" data-id="${id}"><i>${i+1}</i><div><b style="color:var(--f)">${n}</b><br><span>${t}</span></div></button>`).join('');
+
+const OP=[
+{id:'agiz-s',t:'Ağız',k:'Karbonhidrat',b:['<b>Tükürük (enzim):</b> tükürük bezlerinin salgıladığı tükürük lokmayı ıslatır, yumuşatır.','<b>Dişler (öğütme)</b> ve <b>dil (karıştırma)</b> besini küçük parçalara ayırır.','Tükürükteki enzim <b>karbonhidratların kimyasal sindirimini</b> başlatır.'],r:[['Fiziksel',1,'Diş, dil'],['Kimyasal',1,'Karbonhidrat (tükürük)']],tip:'Ağız deyince aklına karbonhidrat gelsin. Ne kadar iyi çiğnersen sindirim o kadar kolaylaşır.',il:`<svg viewBox="0 0 360 250" role="img" aria-label="Çiğneme ve tükürük">
+<ellipse cx="180" cy="125" rx="160" ry="108" fill="#d9473f"/><ellipse cx="180" cy="125" rx="126" ry="76" fill="#5a1a22"/>
+<g fill="#fff">${[0,1,2,3,4,5,6].map(i=>`<rect x="${98+i*24}" y="52" width="18" height="26" rx="4"/>`).join('')}</g>
+<g class="chew"><ellipse cx="180" cy="168" rx="78" ry="20" fill="#f2a0a8"/><g fill="#fff">${[0,1,2,3,4,5,6].map(i=>`<rect x="${98+i*24}" y="176" width="18" height="24" rx="4"/>`).join('')}</g></g>
+<rect x="150" y="100" width="44" height="34" rx="8" fill="#e3a65a"/><g fill="#e3a65a"><circle cx="208" cy="118" r="7"/><circle cx="220" cy="132" r="5"/><circle cx="140" cy="132" r="5"/></g>
+<g fill="#7cc8ff"><circle class="drip" cx="74" cy="110" r="7"/><circle class="drip" cx="286" cy="110" r="7" style="animation-delay:.6s"/></g>
+<text x="180" y="244" text-anchor="middle" class="lbl">Dişler öğütür · dil karıştırır · tükürük ıslatır</text></svg>`},
+{id:'yutak-s',t:'Yutak ve yemek borusu',k:'Geçiş ve iletim',b:['<b>Yutak:</b> ağızdan gelen besinleri <b>yemek borusuna</b>, havayı <b>soluk borusuna</b> gönderir. Yol ayrımındaki bir bekçi gibidir.','Yutarken gırtlak kapağı soluk borusunu kapatır; besin soluk borusuna kaçmaz.','<b>Yemek borusu:</b> yutaktan gelen besinleri kaslarının dalga şeklindeki kasılmalarıyla <b>mideye iletir</b>. "Mideye indirmek" deyimi buradan gelir.'],r:[['Fiziksel',0,''],['Kimyasal',0,'']],tip:'Yutakta ve yemek borusunda sindirim olmaz; sadece geçiş ve iletim vardır.',il:`<svg viewBox="0 0 360 250" role="img" aria-label="Yutakta yol ayrımı ve yemek borusu">
+<path d="M180,248 V150 Q180,118 104,92 V30" fill="none" stroke="#cfd8e3" stroke-width="40"/><path d="M180,150 Q180,118 256,92 V30" fill="none" stroke="#f3c6b3" stroke-width="40"/>
+<path d="M180,248 V150" stroke="#e9d6c8" stroke-width="40"/><path d="M180,240 V160" stroke="#fff" stroke-width="3" stroke-dasharray="10 10"/>
+<path d="M90,70 q14,-10 28,0 M90,50 q14,-10 28,0" stroke="#6a9fd4" stroke-width="3" fill="none"/>
+<circle cx="240" cy="104" r="13" fill="#e3a65a"/><path d="M262,120 L262,60" stroke="#b9572a" stroke-width="3" marker-end="url(#ay)"/><defs><marker id="ay" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="10" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14Z" fill="#b9572a"/></marker></defs>
+<rect x="132" y="168" width="96" height="30" rx="6" fill="#0b857a"/><text x="180" y="189" text-anchor="middle" class="lbl" style="fill:#fff">YUTAK</text>
+<text x="104" y="18" text-anchor="middle" class="lbl">Soluk borusu (hava)</text><text x="256" y="18" text-anchor="middle" class="lbl">Yemek borusu (besin)</text></svg>`},
+{id:'mide-s',t:'Mide',k:'Protein',b:['<b>Kaslar</b> ile besinleri çalkalar ve <b>bulamaç</b> hâline getirir.','<b>Mide öz suyu</b> içindeki enzim <b>proteinlerin kimyasal sindirimini</b> başlatır.','Mide asidi besinlerle gelen mikropların çoğunu öldürür; mukus tabakası mideyi korur.'],r:[['Fiziksel',1,'Kaslar, bulamaç'],['Kimyasal',1,'Protein (mide öz suyu)']],tip:'Mide deyince aklına protein gelsin. Mide karbonhidrat ve yağı kimyasal olarak sindirmez.',il:`<svg viewBox="0 0 360 250" role="img" aria-label="Kaslı mide besini çalkalıyor">
+<g class="flex"><path d="M140,6 V46 C200,22 320,48 320,128 C320,206 248,246 168,238 C100,232 88,196 118,184 C176,170 214,140 192,84 C184,62 160,54 140,50" fill="#e8834f" stroke="#b9572a" stroke-width="4"/>
+<path d="M200,70 Q270,90 290,150 M180,96 Q250,120 262,190 M150,200 Q210,210 250,196" stroke="#b9572a" stroke-opacity=".5" stroke-width="3" fill="none"/></g>
+<g class="spin"><ellipse cx="236" cy="150" rx="30" ry="22" fill="#f0c27a"/><circle cx="226" cy="144" r="5" fill="#fff" fill-opacity=".5"/><circle cx="246" cy="156" r="4" fill="#fff" fill-opacity=".5"/></g>
+<g fill="#3fbf5f"><circle class="drip" cx="210" cy="96" r="6"/><circle class="drip" cx="270" cy="112" r="6" style="animation-delay:.5s"/><circle class="drip" cx="180" cy="130" r="5" style="animation-delay:1s"/></g>
+<text x="40" y="120" class="lbl">Kaslı duvar</text><text x="20" y="232" class="lbl" style="fill:#2a9a48">Mide öz suyu (enzim)</text></svg>`},
+{id:'ince-s',t:'İnce bağırsak',k:'KPY: karbonhidrat, protein, yağ',b:['<b>Bütün besinlerin kimyasal sindirimi pankreas öz suyu sayesinde burada biter.</b>','<b>Safra</b> ile yağların <b>fiziksel</b> sindirimi olur. Safrayı <b>karaciğer</b> üretir.','<b>Villuslar</b> ile <b>emilim</b> olur: yapı taşları kana geçer.'],r:[['Fiziksel',1,'Safra → yağ (karaciğer)'],['Kimyasal',1,'Karbonhidrat, protein, yağ (pankreas öz suyu)'],['Emilim',1,'Villuslarla']],tip:'Ağız → karbonhidrat, mide → protein, ince bağırsak → üçü de. Sindirim sisteminin en uzun bölümüdür.',il:`<svg viewBox="0 0 360 250" role="img" aria-label="Safra yağı damlacıklara, pankreas öz suyu besinleri yapı taşlarına ayırır">
+<g fill="#f3d34a" stroke="#c9a20c" stroke-width="2"><circle cx="40" cy="62" r="24"/><circle cx="88" cy="46" r="18"/><circle cx="84" cy="92" r="16"/></g>
+<path d="M120,70 H200" stroke="#3fbf5f" stroke-width="5" marker-end="url(#ag)"/><defs><marker id="ag" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16Z" fill="#3fbf5f"/></marker><marker id="ao" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16Z" fill="#e39a2b"/></marker></defs>
+<text x="160" y="58" text-anchor="middle" class="lbl" style="fill:#2a9a48">Safra (fiziksel)</text>
+<g fill="#f3d34a" stroke="#c9a20c">${Array.from({length:16},(_,i)=>`<circle cx="${228+(i%6)*22}" cy="${44+Math.floor(i/6)*22}" r="6"/>`).join('')}</g>
+<path d="M14,186 H130" stroke="#7a6a5a" stroke-width="3"/><g fill="#ef5b5b">${[0,1,2,3,4,5].map(i=>`<circle cx="${18+i*22}" cy="186" r="10"/>`).join('')}</g>
+<path d="M150,186 H222" stroke="#e39a2b" stroke-width="5" marker-end="url(#ao)"/><text x="186" y="160" text-anchor="middle" class="lbl" style="fill:#c07a10">Pankreas öz suyu</text><text x="186" y="216" text-anchor="middle" class="lbl" style="fill:#c07a10">(kimyasal)</text>
+<g fill="#ef5b5b">${[[244,170],[280,196],[312,166],[338,200],[262,214],[300,226]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9"/>`).join('')}</g></svg>`},
+{id:'kalin-s',t:'Kalın bağırsak ve anüs',k:'Su, vitamin, mineral emilimi',b:['Atık maddeler <b>posa</b> şeklini alarak anüse doğru ilerler.','Bazı <b>vitamin, minerallerin ve suyun emilimi</b> yapılır.','Posa <b>anüsten</b> vücut dışına atılır.'],r:[['Fiziksel',0,''],['Kimyasal',0,''],['Emilim',1,'Su, vitamin, mineral']],tip:'Kalın bağırsakta sindirim yoktur, sadece emilim vardır. Villus bulunmaz.',il:`<svg viewBox="0 0 360 250" role="img" aria-label="Kalın bağırsakta su emilir, posa anüse ilerler">
+<path d="M80,214 V56 Q80,34 102,34 H258 Q280,34 280,56 V184 Q280,206 254,208 H196 V244" fill="none" stroke="#e7a98a" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#8a5a3c"><ellipse cx="80" cy="170" rx="10" ry="7"/><ellipse cx="160" cy="34" rx="11" ry="7"/><ellipse cx="280" cy="120" rx="10" ry="7"/><ellipse cx="220" cy="208" rx="10" ry="7"/></g>
+<g fill="#4f9fe8"><circle class="outL" cx="56" cy="110" r="7"/><circle class="outL" cx="56" cy="150" r="6" style="animation-delay:.7s"/><circle class="outR" cx="304" cy="90" r="7" style="animation-delay:.3s"/><circle class="outR" cx="304" cy="150" r="6" style="animation-delay:1s"/></g>
+<circle cx="196" cy="244" r="6" fill="#8a4b36"/><text x="180" y="128" text-anchor="middle" class="lbl">Su, vitamin, mineral</text><text x="180" y="148" text-anchor="middle" class="lbl">kana geçer</text><text x="230" y="240" class="lbl">Anüs</text></svg>`}];
+$('#organs').outerHTML=OP.map(o=>`<section class="ch" id="${o.id}" data-t="${o.t}"><h2>${o.t}</h2><p class="lead">Anahtar kelime: <span class="key" style="background:var(--coral);font-size:16px">${o.k}</span></p><div class="op"><div><ul>${o.b.map(x=>`<li>${x}</li>`).join('')}</ul><table class="ft">${o.r.map(([n,v,t])=>`<tr><td>${n}</td><td class="${v?'ok2':'no2'}">${v?'✓':'✗'}</td><td>${t}</td></tr>`).join('')}</table><div class="box tip">${o.tip}</div></div><figure class="ill">${o.il}</figure></div></section>`).join('');
+
 // ---- bölümler ----
 const CH=[...document.querySelectorAll('.ch')];
-$('#nav').innerHTML=CH.map(c=>`<a href="#${c.id}" data-c="${c.id}">${c.dataset.t}</a>`).join('');
+$('#nav').innerHTML=CH.map(c=>`<a href="#${c.id}" data-c="${c.id}">${CH.indexOf(c)+1}. ${c.dataset.t}</a>`).join('');
 function go(){let id=location.hash.slice(1);let i=CH.findIndex(c=>c.id===id);if(i<0)i=0;
  CH.forEach((c,j)=>c.classList.toggle('on',j===i));document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.c===CH[i].id));
  $('#nav a.on')?.scrollIntoView({inline:'center',block:'nearest'});$('#prog').style.width=((i+1)/CH.length*100)+'%';
@@ -271,7 +366,7 @@ const ORG=`<ellipse cx="260" cy="72" rx="52" ry="60" fill="var(--body)" stroke="
 const L=[['tukuruk','Tükürük bezleri',112,226,112,0],['yutak','Yutak',140,252,136,0],['karaciger','Karaciğer',246,170,250,0],['safra','Safra kesesi',300,196,298,0],['kalin','Kalın bağırsak',420,166,420,0],['anus','Anüs',546,256,542,0],
 ['agiz','Ağız',98,280,102,1],['yemek','Yemek borusu',190,264,190,1],['mide','Mide',272,346,272,1],['pankreas','Pankreas',334,330,326,1],['ince','İnce bağırsak',440,318,436,1]];
 const lines=(txt)=>L.map(([id,t,y,tx,ty,r])=>`<line class="ll" x1="${r?404:118}" y1="${y}" x2="${tx}" y2="${ty}"/><circle cx="${tx}" cy="${ty}" r="2.5" fill="var(--soft)"/><text class="lbl" data-id="${id}" x="${r?508:12}" y="${y+5}" text-anchor="${r?'end':'start'}">${txt(id,t)}</text>`).join('');
-const fig=$('#fig');fig.innerHTML=ORG+lines((id,t)=>t);
+const NN={agiz:1,yutak:2,yemek:3,mide:4,ince:5,kalin:6,anus:7};const fig=$('#fig');fig.innerHTML=ORG+lines((id,t)=>NN[id]?NN[id]+'- '+t:t);
 const O={
 agiz:{n:'Ağız',k:'Karbonhidrat',f:'Dişler öğütür, dil karıştırır.',c:'Tükürükteki enzim karbonhidratların kimyasal sindirimini başlatır.',e:'Yok',x:'Ne kadar iyi çiğnersen sindirim o kadar kolay olur.'},
 tukuruk:{n:'Tükürük bezleri',k:'Tükürük',f:'Tükürük lokmayı ıslatır, yumuşatır.',c:'Tükürükteki enzimler karbonhidratları sindirmeye başlar.',e:'Yok',x:'Tükürük besinle birlikte mideye kadar iner.'},
@@ -288,7 +383,7 @@ const mk=(t,cls)=>t==='Yok'?'<span class="no">Yok</span>':`<span class="key ${cl
 function show(id){const o=O[id];fig.classList.add('sel');fig.querySelectorAll('[data-id]').forEach(e=>e.classList.toggle('on',e.dataset.id===id));
  $('#info').innerHTML=`<h3>${o.n}</h3><p>Anahtar kelime: <b style="color:var(--coral)">${o.k}</b></p><div class="row"><b style="color:var(--f)">Fiziksel</b><span>${mk(o.f,'F')}</span></div><div class="row"><b style="color:var(--k)">Kimyasal</b><span>${mk(o.c,'K')}</span></div><div class="row"><b style="color:var(--e)">Emilim</b><span>${mk(o.e,'E')}</span></div><p style="margin-top:10px">${o.x}</p>`}
 $('#info').innerHTML='<h3>Bir organa dokun</h3><p>Çizimdeki organlara ya da adlarına dokun. Her organın <b>anahtar kelimesini</b> ve orada fiziksel sindirim, kimyasal sindirim ya da emilim olup olmadığını gör.</p><p>Şekil üzerinden organ gösterme soruları çok sorulur; organların yerlerini iyi öğren.</p>';
-fig.addEventListener('click',e=>{const t=e.target.closest('[data-id]');if(t)show(t.dataset.id)});
+fig.addEventListener('click',e=>{const t=e.target.closest('[data-id]');if(t)show(t.dataset.id)});$('#nums').addEventListener('click',e=>{const t=e.target.closest('[data-id]');if(t){show(t.dataset.id);$('#info').scrollIntoView({block:'nearest',behavior:'smooth'})}});
 fig.querySelectorAll('.org').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label',O[g.dataset.id].n);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(g.dataset.id)}})});
 
 // ---- sindirim çizimi küçük parçalar ----
